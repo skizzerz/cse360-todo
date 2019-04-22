@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class TodoListItem implements ITodoListItem {
 	//Version ID for serialization
-	private static final long serialVersionUID = 1;
+	private static final long serialVersionUID = 2;
 	//Basic Data
 	private int priority = 0;
 	private String description = "";
@@ -199,6 +199,35 @@ public class TodoListItem implements ITodoListItem {
 				return this.getNextPrio();
 			} else {
 				return this.getPrevPrio();
+			}
+		}
+	}
+	public boolean hasNext(SortBy order, SortDirection direction) {
+		switch(order) {
+		case Description:
+			if(direction == SortDirection.Ascending) {
+				return this.hasNextDesc();
+			} else {
+				return this.hasPrevDesc();
+			}
+		case DueDate:
+			if(direction == SortDirection.Ascending) {
+				return this.hasNextDue();
+			} else {
+				return this.hasPrevDue();
+			}
+		case Status:
+			if(direction == SortDirection.Ascending) {
+				return this.hasNextStat();
+			} else {
+				return this.hasPrevStat();
+			}
+		default:
+		case Priority:
+			if(direction == SortDirection.Ascending) {
+				return this.hasNextPrio();
+			} else {
+				return this.hasPrevPrio();
 			}
 		}
 	}
