@@ -16,14 +16,7 @@ public class TodoListItem implements ITodoListItem {
 	private Date startDate = null;
 	private Date finishDate = null;
 	//List Links
-	private TodoListItem nextDesc = null;
-	private TodoListItem prevDesc = null;
-	private TodoListItem nextPrio = null;
-	private TodoListItem prevPrio = null;
-	private TodoListItem nextDue = null;
-	private TodoListItem prevDue = null;
-	private TodoListItem nextStat = null;
-	private TodoListItem prevStat = null;
+	private TodoListItem next = null;
 	//Constructor
 	public TodoListItem() {
 		this("",0,currentDate(),Status.NotStarted);
@@ -39,19 +32,7 @@ public class TodoListItem implements ITodoListItem {
 		return priority;
 	}
 	public void setPriority(Integer priority) {
-		if(!this.hasPrevPrio() && !this.hasNextPrio()) {
-			this.priority = priority;
-		}
-	}
-	public void rectifyPriority() {
-		if(!this.hasPrevPrio()) {
-			this.priority = 1;
-		} else if(this.priority != this.getPrevPrio().getPriority()+1) {
-			this.priority = this.getPrevPrio().getPriority()+1;
-		}
-		if(this.hasNextPrio()) {
-			this.getNextPrio().rectifyPriority();
-		}
+		this.priority = priority;
 	}
 	public String getDescription() {
 		return description;
@@ -90,16 +71,16 @@ public class TodoListItem implements ITodoListItem {
 	}
 	public String getStatusText() {
 		switch(this.getStatus()) {
-		case Cancelled:
-			return "Cancelled";
 		case NotStarted:
 			return "Not Started";
 		case InProgress:
 			return "In Progress";
 		case Finished:
 			return "Finished";
+		default:
+		case Cancelled:
+			return "Cancelled";
 		}
-		return "Unknown Status";
 	}
 	public void setStatus(Status status) {
 		this.status = status;
@@ -173,135 +154,14 @@ public class TodoListItem implements ITodoListItem {
 		}
 	}
 	//List Traversal Functions
-	public TodoListItem traverse(SortBy order, SortDirection direction) {
-		switch(order) {
-		case Description:
-			if(direction == SortDirection.Ascending) {
-				return this.getNextDesc();
-			} else {
-				return this.getPrevDesc();
-			}
-		case DueDate:
-			if(direction == SortDirection.Ascending) {
-				return this.getNextDue();
-			} else {
-				return this.getPrevDue();
-			}
-		case Status:
-			if(direction == SortDirection.Ascending) {
-				return this.getNextStat();
-			} else {
-				return this.getPrevStat();
-			}
-		default:
-		case Priority:
-			if(direction == SortDirection.Ascending) {
-				return this.getNextPrio();
-			} else {
-				return this.getPrevPrio();
-			}
-		}
+	public boolean hasNext() {
+		return next != null;
 	}
-	public boolean hasNext(SortBy order, SortDirection direction) {
-		switch(order) {
-		case Description:
-			if(direction == SortDirection.Ascending) {
-				return this.hasNextDesc();
-			} else {
-				return this.hasPrevDesc();
-			}
-		case DueDate:
-			if(direction == SortDirection.Ascending) {
-				return this.hasNextDue();
-			} else {
-				return this.hasPrevDue();
-			}
-		case Status:
-			if(direction == SortDirection.Ascending) {
-				return this.hasNextStat();
-			} else {
-				return this.hasPrevStat();
-			}
-		default:
-		case Priority:
-			if(direction == SortDirection.Ascending) {
-				return this.hasNextPrio();
-			} else {
-				return this.hasPrevPrio();
-			}
-		}
+	public TodoListItem getNext() {
+		return next;
 	}
-	public boolean hasNextDesc() {
-		return nextDesc != null;
-	}
-	public TodoListItem getNextDesc() {
-		return nextDesc;
-	}
-	public void setNextDesc(TodoListItem nextDesc) {
-		this.nextDesc = nextDesc;
-	}
-	public boolean hasPrevDesc() {
-		return prevDesc != null;
-	}
-	public TodoListItem getPrevDesc() {
-		return prevDesc;
-	}
-	public void setPrevDesc(TodoListItem prevDesc) {
-		this.prevDesc = prevDesc;
-	}
-	public boolean hasNextPrio() {
-		return nextPrio != null;
-	}
-	public TodoListItem getNextPrio() {
-		return nextPrio;
-	}
-	public void setNextPrio(TodoListItem nextPrio) {
-		this.nextPrio = nextPrio;
-	}
-	public boolean hasPrevPrio() {
-		return prevPrio != null;
-	}
-	public TodoListItem getPrevPrio() {
-		return prevPrio;
-	}
-	public void setPrevPrio(TodoListItem prevPrio) {
-		this.prevPrio = prevPrio;
-	}
-	public boolean hasNextDue() {
-		return nextDue != null;
-	}
-	public TodoListItem getNextDue() {
-		return nextDue;
-	}
-	public void setNextDue(TodoListItem nextDue) {
-		this.nextDue = nextDue;
-	}
-	public boolean hasPrevDue() {
-		return prevDue != null;
-	}
-	public TodoListItem getPrevDue() {
-		return prevDue;
-	}
-	public void setPrevDue(TodoListItem prevDue) {
-		this.prevDue = prevDue;
-	}
-	public boolean hasNextStat() {
-		return nextStat != null;
-	}
-	public TodoListItem getNextStat() {
-		return nextStat;
-	}
-	public void setNextStat(TodoListItem nextStat) {
-		this.nextStat = nextStat;
-	}
-	public boolean hasPrevStat() {
-		return prevStat!= null;
-	}
-	public TodoListItem getPrevStat() {
-		return prevStat;
-	}
-	public void setPrevStat(TodoListItem prevStat) {
-		this.prevStat = prevStat;
+	public void setNext(TodoListItem next) {
+		this.next = next;
 	}
 	//Helper Functions
 	public static Date currentDate() {
