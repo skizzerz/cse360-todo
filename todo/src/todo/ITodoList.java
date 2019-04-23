@@ -35,7 +35,7 @@ public interface ITodoList extends Serializable {
 	public Iterable<ITodoListItem> getList();
 
 	/**
-	 * Retreives the todo list, sorted and filtered according to the passed-in filter.
+	 * Retrieves the todo list, sorted and filtered according to the passed-in filter.
 	 *
 	 * @param filter A filter to apply to the list to restrict and sort output
 	 * @return An iterable containing the sorted and filtered list

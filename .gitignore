@@ -53,3 +53,8 @@ local.properties
 .cache-main
 .scala_dependencies
 .worksheet
+
+# Other stuff
+.idea/
+*.iml
+*.eml
