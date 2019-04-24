@@ -16,6 +16,9 @@ import javafx.stage.Stage;
 public class Program extends Application {
     private static Program instance;
     private Stage stage;
+    private ITodoList list = null;
+    private ITodoListFilter filter = null;
+    private boolean dirtyFlag = false;
 
     /**
      * Main entry point to the program
@@ -66,6 +69,7 @@ public class Program extends Application {
      *
      * @param fxmlName FXML file name to load and display
      * @return Stage containing modal window
+     * @throws Exception On error with display manager
      */
     public static Stage getModal(String fxmlName) throws Exception {
         Stage modalStage = new Stage();
@@ -78,11 +82,76 @@ public class Program extends Application {
     }
 
     /**
+     * Changes to the specified scene.
+     *
+     * @param fxmlName FXML file name to load and display
+     * @throws Exception On error with display manager
+     */
+    public static void changeScene(String fxmlName) throws Exception {
+        Parent screen = FXMLLoader.load(Program.class.getResource(fxmlName));
+        instance.stage.setScene(new Scene(screen));
+    }
+
+    /**
      * Gets the primary stage for the application
      *
      * @return Primary stage
      */
     public static Stage getStage() {
         return instance.stage;
+    }
+
+    /**
+     * Retrieves the list managed by the program
+     *
+     * @return The list that was opened
+     */
+    public static ITodoList getList() {
+        return instance.list;
+    }
+
+    /**
+     * Sets the list managed by the program
+     *
+     * @param value The list that is opened
+     */
+    public static void setList(ITodoList value) {
+        instance.list = value;
+    }
+
+    /**
+     * Gets whether or not the list has unsaved changes
+     *
+     * @return True if the list has unsaved changes, false otherwise
+     */
+    public static boolean getDirtyFlag() {
+        return instance.dirtyFlag;
+    }
+
+    /**
+     * Sets whether or not the list has unsaved changes
+     *
+     * @param value True if the list has unsaved changes, false otherwise
+     */
+    public static void setDirtyFlag(boolean value) {
+        instance.dirtyFlag = value;
+    }
+
+    /**
+     * Gets the filter for the current list
+     *
+     * @return List filter
+     */
+    public static ITodoListFilter getFilter() {
+        return instance.filter;
+    }
+
+    /**
+     * Sets the filter for the current list
+     *
+     * @param value List filter
+     */
+    public static void setFilter(ITodoListFilter value) {
+        instance.filter = value;
     }
 }

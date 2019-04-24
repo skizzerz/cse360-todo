@@ -6,7 +6,10 @@ package todo;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -48,7 +51,7 @@ public class SplashScreenController implements Initializable {
      */
     @FXML
     void newList(ActionEvent event) {
-
+        createNewList();
     }
 
     /**
@@ -66,7 +69,7 @@ public class SplashScreenController implements Initializable {
      */
     @FXML
     void menuNew(ActionEvent event) {
-
+        createNewList();
     }
 
     /**
@@ -93,7 +96,7 @@ public class SplashScreenController implements Initializable {
      */
     @FXML
     void menuUserGuide(ActionEvent event) {
-
+        // TODO: IMPLEMENT THIS (open browser to user guide pdf or something)
     }
 
     /**
@@ -109,6 +112,21 @@ public class SplashScreenController implements Initializable {
     }
 
     /**
+     * Sends the user to the main screen with a new, blank list
+     */
+    private void createNewList() {
+        Program.setList(new TodoList());
+        Program.setDirtyFlag(true);
+        Program.setFilter(new TodoListFilter());
+        try {
+            Program.changeScene("MainScreen.fxml");
+        } catch (Exception e) {
+            Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
+            alert.showAndWait();
+        }
+    }
+
+    /**
      * Displays a dialog that allows the user to browse for and open a file
      */
     private void showOpenDialog() {
@@ -117,8 +135,15 @@ public class SplashScreenController implements Initializable {
 
         File file = chooser.showOpenDialog(Program.getStage());
         if (file != null) {
-            // call into FileManager (or whatever we call it) to open and process the file
-            // we'll need to show an error message if the file they tried to open is invalid
+            try {
+                Program.setList(FileManager.loadFromFile(file));
+                Program.setDirtyFlag(false);
+                Program.setFilter(new TodoListFilter());
+                Program.changeScene("MainScreen.fxml");
+            } catch (Exception e) {
+                Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
+                alert.showAndWait();
+            }
         }
     }
 }
