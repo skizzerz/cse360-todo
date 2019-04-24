@@ -13,32 +13,32 @@ public class IconManager {
     /**
      * New icon: page with 3 lines
      */
-    public final static String New = "\uf15c";
+    public final static String NEW = "\uf15c";
 
     /**
      * Open icon: folder
      */
-    public final static String Open = "\uf07b";
+    public final static String OPEN = "\uf07b";
 
     /**
      * In Progress icon: arrow pointing right
      */
-    public final static String InProgress = "\uf061";
+    public final static String IN_PROGRESS = "\uf061";
 
     /**
      * Finished icon: check mark
      */
-    public final static String Finished = "\uf00c";
+    public final static String FINISHED = "\uf00c";
 
     /**
      * Cancelled icon: x
      */
-    public final static String Cancelled = "\uf00d";
+    public final static String CANCELLED = "\uf00d";
 
     /**
      * Application icon: check list
      */
-    public final static String AppIcon = "\uf0ae";
+    public final static String APP_ICON = "\uf0ae";
 
     static {
         String fontRef = Program.class.getResource("fa-solid-900.ttf").toExternalForm();

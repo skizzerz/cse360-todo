@@ -26,6 +26,6 @@ public class AboutScreenController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         appIconLabel.setFont(IconManager.getSplashIconFont());
-        appIconLabel.setText(IconManager.AppIcon);
+        appIconLabel.setText(IconManager.APP_ICON);
     }
 }
