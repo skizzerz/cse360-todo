@@ -39,10 +39,10 @@ public class SplashScreenController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         newListButton.setFont(IconManager.getSplashIconFont());
-        newListButton.setText(IconManager.New);
+        newListButton.setText(IconManager.NEW);
 
         openListButton.setFont(IconManager.getSplashIconFont());
-        openListButton.setText(IconManager.Open);
+        openListButton.setText(IconManager.OPEN);
     }
 
     /**
