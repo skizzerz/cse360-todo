@@ -7,6 +7,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -48,8 +49,7 @@ public class Program extends Application {
 
         // load splash screen
         Parent splashScreen = FXMLLoader.load(Program.class.getResource("SplashScreen.fxml"));
-        Scene splashScene = new Scene(splashScreen);
-        stage.setScene(splashScene);
+        stage.setScene(new Scene(splashScreen));
         stage.show();
     }
 
@@ -58,6 +58,23 @@ public class Program extends Application {
      */
     public static void close() {
         instance.stage.close();
+    }
+
+    /**
+     * Retrieves a modal window above the main stage. The caller can finish setting up the stage
+     * and then call show() or showAndWait() to display it to the end user.
+     *
+     * @param fxmlName FXML file name to load and display
+     * @return Stage containing modal window
+     */
+    public static Stage getModal(String fxmlName) throws Exception {
+        Stage modalStage = new Stage();
+        Parent modalScreen = FXMLLoader.load(Program.class.getResource(fxmlName));
+        modalStage.setScene(new Scene(modalScreen));
+        modalStage.initModality(Modality.APPLICATION_MODAL);
+        modalStage.initOwner(instance.stage);
+
+        return modalStage;
     }
 
     /**

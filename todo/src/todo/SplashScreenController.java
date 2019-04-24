@@ -8,9 +8,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -85,6 +85,27 @@ public class SplashScreenController implements Initializable {
     @FXML
     void menuExit(ActionEvent event) {
         Program.close();
+    }
+
+    /**
+     * Called when the user selects the Help->User Guide menu option
+     * @param event UI event
+     */
+    @FXML
+    void menuUserGuide(ActionEvent event) {
+
+    }
+
+    /**
+     * Called when the user selects the Help->About menu option
+     * @param event UI event
+     */
+    @FXML
+    void menuAbout(ActionEvent event) throws Exception {
+        Stage about = Program.getModal("AboutScreen.fxml");
+        about.setResizable(false);
+        about.setTitle("About To-Do List");
+        about.show();
     }
 
     /**

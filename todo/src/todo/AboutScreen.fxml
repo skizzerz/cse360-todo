@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="bg-dark" stylesheets="@gui.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="todo.AboutScreenController">
+   <children>
+      <HBox layoutX="100.0" layoutY="169.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label fx:id="appIconLabel" alignment="CENTER" prefHeight="400.0" prefWidth="200.0" text="." textAlignment="CENTER">
+               <styleClass>
+                  <String fx:value="fg-light" />
+                  <String fx:value="splash-icon" />
+               </styleClass>
+               <padding>
+                  <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+               </padding>
+            </Label>
+            <VBox prefHeight="400.0" prefWidth="400.0" spacing="15.0">
+               <children>
+                  <Label styleClass="fg-light" text="To-Do List">
+                     <font>
+                        <Font name="System Bold" size="48.0" />
+                     </font>
+                  </Label>
+                  <Label styleClass="fg-light" text="Version 1.0" />
+                  <Label styleClass="fg-light" text="Noah Anderson&#10;Adam Harvey&#10;Adwith Malpe&#10;Ryan Schmidt" />
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+               </padding>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

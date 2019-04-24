@@ -35,6 +35,11 @@ public class IconManager {
      */
     public final static String Cancelled = "\uf00d";
 
+    /**
+     * Application icon: check list
+     */
+    public final static String AppIcon = "\uf0ae";
+
     static {
         String fontRef = Program.class.getResource("fa-solid-900.ttf").toExternalForm();
         splashIconFont = Font.loadFont(fontRef, 72);
