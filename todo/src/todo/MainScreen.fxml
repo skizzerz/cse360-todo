@@ -30,6 +30,11 @@
                               <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                            </accelerator>
                         </MenuItem>
+                        <MenuItem mnemonicParsing="false" text="Print Report">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="P" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator>
+                        </MenuItem>
                         <MenuItem mnemonicParsing="false" text="Exit">
                            <accelerator>
                               <KeyCodeCombination alt="DOWN" code="F4" control="UP" meta="UP" shift="UP" shortcut="UP" />
@@ -37,11 +42,34 @@
                         </MenuItem>
                   </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
+                <Menu mnemonicParsing="false" text="Sort">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
+                        <Menu mnemonicParsing="false" text="Ascending">
+                          <items>
+                            <MenuItem mnemonicParsing="false" text="Desciption" />
+                              <MenuItem mnemonicParsing="false" text="Due Date" />
+                              <MenuItem mnemonicParsing="false" text="Priority" />
+                              <MenuItem mnemonicParsing="false" text="Status" />
+                          </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Descending">
+                          <items>
+                              <MenuItem mnemonicParsing="false" text="Desciption" />
+                              <MenuItem mnemonicParsing="false" text="Due Date" />
+                              <MenuItem mnemonicParsing="false" text="Priority" />
+                              <MenuItem mnemonicParsing="false" text="Status" />
+                          </items>
+                        </Menu>
                   </items>
                 </Menu>
+                  <Menu mnemonicParsing="false" text="Filter">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="Not Started" />
+                        <MenuItem mnemonicParsing="false" text="In Progress" />
+                        <MenuItem mnemonicParsing="false" text="Finished" />
+                        <MenuItem mnemonicParsing="false" text="Cancelled" />
+                    </items>
+                  </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                   <items>
                     <MenuItem mnemonicParsing="false" text="About" />
@@ -51,15 +79,11 @@
             </MenuBar>
          </top>
       </BorderPane>
-      <Pane layoutY="25.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="1050.0" styleClass="bg-dark" stylesheets="@gui.css">
-         <children>
-            <Label layoutX="14.0" layoutY="42.0" text="MyList" />
-         </children>
-      </Pane>
-      <ScrollPane layoutY="125.0" prefHeight="575.0" prefWidth="1050.0" styleClass="bg-light" stylesheets="@gui.css">
+      <ScrollPane hbarPolicy="NEVER" layoutY="125.0" prefHeight="575.0" prefWidth="1050.0" styleClass="bg-light" stylesheets="@gui.css" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="575.0" prefWidth="1049.0" styleClass="bg-light" stylesheets="@gui.css" />
         </content>
       </ScrollPane>
+      <Pane layoutY="25.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="1050.0" styleClass="bg-dark" stylesheets="@gui.css" />
    </children>
 </AnchorPane>
