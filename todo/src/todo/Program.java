@@ -13,6 +13,9 @@ import javafx.stage.Stage;
  * Main entry point to the program
  */
 public class Program extends Application {
+    private static Program instance;
+    private Stage stage;
+
     /**
      * Main entry point to the program
      * @param args Command-line args
@@ -38,12 +41,31 @@ public class Program extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("To-Do List");
+        instance = this;
+        stage = primaryStage;
+        stage.setResizable(false);
+        stage.setTitle("To-Do List");
 
         // load splash screen
         Parent splashScreen = FXMLLoader.load(Program.class.getResource("SplashScreen.fxml"));
         Scene splashScene = new Scene(splashScreen);
-        primaryStage.setScene(splashScene);
-        primaryStage.show();
+        stage.setScene(splashScene);
+        stage.show();
+    }
+
+    /**
+     * Exits the program
+     */
+    public static void close() {
+        instance.stage.close();
+    }
+
+    /**
+     * Gets the primary stage for the application
+     *
+     * @return Primary stage
+     */
+    public static Stage getStage() {
+        return instance.stage;
     }
 }

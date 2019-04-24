@@ -7,7 +7,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.stage.FileChooser;
 
+import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -55,7 +57,7 @@ public class SplashScreenController implements Initializable {
      */
     @FXML
     void openList(ActionEvent event) {
-
+        showOpenDialog();
     }
 
     /**
@@ -73,7 +75,7 @@ public class SplashScreenController implements Initializable {
      */
     @FXML
     void menuOpen(ActionEvent event) {
-
+        showOpenDialog();
     }
 
     /**
@@ -82,6 +84,20 @@ public class SplashScreenController implements Initializable {
      */
     @FXML
     void menuExit(ActionEvent event) {
+        Program.close();
+    }
 
+    /**
+     * Displays a dialog that allows the user to browse for and open a file
+     */
+    private void showOpenDialog() {
+        FileChooser chooser = new FileChooser();
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("To-Do Lists", "*.tdl"));
+
+        File file = chooser.showOpenDialog(Program.getStage());
+        if (file != null) {
+            // call into FileManager (or whatever we call it) to open and process the file
+            // we'll need to show an error message if the file they tried to open is invalid
+        }
     }
 }
