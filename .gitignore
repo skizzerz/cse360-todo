@@ -58,3 +58,4 @@ local.properties
 .idea/
 *.iml
 *.eml
+out/

@@ -1,0 +1,41 @@
+/* CSE 360 Project - Team 10
+ * Noah Anderson, Adam Harvey, Adwith Malpe, Ryan Schmidt
+ * Styles for GUI layouts
+ */
+
+/* apply a white-ish background color (for menus, etc.) */
+.bg-white {
+    -fx-background-color: #f1f1f2;
+}
+
+/* apply a light blue background color */
+.bg-light {
+    -fx-background-color: #a1d6e2;
+}
+
+/* apply a dark blue background color */
+.bg-dark {
+    -fx-background-color: #1995ad;
+}
+
+/* apply a white-ish text color */
+.fg-light {
+    -fx-fill: #f1f1f2;
+    -fx-text-fill: #f1f1f2;
+}
+
+/* apply a dark grey text color */
+.fg-dark {
+    -fx-fill: #707070;
+    -fx-text-fill: #707070;
+}
+
+.splash-icon {
+    -fx-font-family: "Font Awesome 5 Free Solid";
+    -fx-font-size: 72pt;
+}
+
+.status-icon {
+    -fx-font-family: "Font Awesome 5 Free Solid";
+    -fx-font-size: 24pt;
+}
