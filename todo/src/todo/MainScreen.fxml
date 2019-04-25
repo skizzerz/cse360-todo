@@ -1,41 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.input.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1050.0" styleClass="bg-light" stylesheets="@gui.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" prefWidth="1050.0" styleClass="bg-light" stylesheets="@gui.css">
+      <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" prefWidth="1050.0" styleClass="bg-light" stylesheets="@gui.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
             <MenuBar BorderPane.alignment="CENTER">
               <menus>
                 <Menu mnemonicParsing="false" text="File">
                   <items>
-                        <MenuItem mnemonicParsing="false" text="New">
+                        <MenuItem mnemonicParsing="false" onAction="#menuNew" text="New">
                            <accelerator>
                               <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                            </accelerator>
                         </MenuItem>
-                        <MenuItem mnemonicParsing="false" text="Open">
+                        <MenuItem mnemonicParsing="false" onAction="#menuOpen" text="Open">
                            <accelerator>
                               <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                            </accelerator>
                         </MenuItem>
-                        <MenuItem mnemonicParsing="false" text="Save As">
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#menuClose" text="Close" />
+                        <MenuItem mnemonicParsing="false" onAction="#menuSave" text="Save As">
                            <accelerator>
                               <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                            </accelerator>
                         </MenuItem>
-                        <MenuItem mnemonicParsing="false" text="Print Report">
+                        <MenuItem mnemonicParsing="false" onAction="#menuSaveAs" text="Save As..." />
+                        <MenuItem mnemonicParsing="false" onAction="#menuPrint" text="Print...">
                            <accelerator>
                               <KeyCodeCombination alt="UP" code="P" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                            </accelerator>
                         </MenuItem>
-                        <MenuItem mnemonicParsing="false" text="Exit">
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#menuExit" text="Exit">
                            <accelerator>
                               <KeyCodeCombination alt="DOWN" code="F4" control="UP" meta="UP" shift="UP" shortcut="UP" />
                            </accelerator>
@@ -43,47 +48,69 @@
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Sort">
-                  <items>
-                        <Menu mnemonicParsing="false" text="Ascending">
+                     <items>
+                        <Menu mnemonicParsing="false" text="Priority">
+                           <items>
+                              <CheckMenuItem fx:id="sortPriorityAscendingItem" mnemonicParsing="false" onAction="#menuSortPriorityAscending" text="Ascending" />
+                              <CheckMenuItem fx:id="sortPriorityDescendingItem" mnemonicParsing="false" onAction="#menuSortPriorityDescending" text="Descending" />
+                           </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Status">
                           <items>
-                            <MenuItem mnemonicParsing="false" text="Desciption" />
-                              <MenuItem mnemonicParsing="false" text="Due Date" />
-                              <MenuItem mnemonicParsing="false" text="Priority" />
-                              <MenuItem mnemonicParsing="false" text="Status" />
+                              <CheckMenuItem fx:id="sortStatusAscendingItem" mnemonicParsing="false" onAction="#menuSortStatusAscending" text="Ascending" />
+                              <CheckMenuItem fx:id="sortStatusDescendingItem" mnemonicParsing="false" onAction="#menuSortStatusDescending" text="Descending" />
                           </items>
                         </Menu>
-                        <Menu mnemonicParsing="false" text="Descending">
+                        <Menu mnemonicParsing="false" text="Description">
                           <items>
-                              <MenuItem mnemonicParsing="false" text="Desciption" />
-                              <MenuItem mnemonicParsing="false" text="Due Date" />
-                              <MenuItem mnemonicParsing="false" text="Priority" />
-                              <MenuItem mnemonicParsing="false" text="Status" />
+                              <CheckMenuItem fx:id="sortDescriptionAscendingItem" mnemonicParsing="false" onAction="#menuSortDescriptionAscending" text="Ascending" />
+                              <CheckMenuItem fx:id="sortDescriptionDescendingItem" mnemonicParsing="false" onAction="#menuSortDescriptionDescending" text="Descending" />
                           </items>
                         </Menu>
-                  </items>
+                        <Menu mnemonicParsing="false" text="Due Date">
+                          <items>
+                              <CheckMenuItem fx:id="sortDueDateAscendingItem" mnemonicParsing="false" onAction="#menuSortDueDateAscending" text="Ascending" />
+                              <CheckMenuItem fx:id="sortDueDateDescendingItem3" mnemonicParsing="false" onAction="#menuSortDueDateDescending" text="Descending" />
+                          </items>
+                        </Menu>
+                     </items>
                 </Menu>
-                  <Menu mnemonicParsing="false" text="Filter">
-                    <items>
-                      <MenuItem mnemonicParsing="false" text="Not Started" />
-                        <MenuItem mnemonicParsing="false" text="In Progress" />
-                        <MenuItem mnemonicParsing="false" text="Finished" />
-                        <MenuItem mnemonicParsing="false" text="Cancelled" />
-                    </items>
+                  <Menu mnemonicParsing="false" text="Show">
+                     <items>
+                        <CheckMenuItem fx:id="showNotStartedItem" mnemonicParsing="false" onAction="#menuShowNotStarted" text="Not Started" />
+                        <CheckMenuItem fx:id="showInProgressItem" mnemonicParsing="false" onAction="#menuShowInProgress" text="In Progress" />
+                        <CheckMenuItem fx:id="showFinishedItem" mnemonicParsing="false" onAction="#menuShowFinished" text="Finished" />
+                        <CheckMenuItem fx:id="showCancelledItem" mnemonicParsing="false" onAction="#menuShowCancelled" text="Cancelled" />
+                     </items>
                   </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
+                        <MenuItem mnemonicParsing="false" onAction="#menuUserGuide" text="User Guide" />
+                    <MenuItem mnemonicParsing="false" onAction="#menuAbout" text="About" />
                   </items>
                 </Menu>
               </menus>
             </MenuBar>
          </top>
+         <center>
+            <VBox BorderPane.alignment="CENTER">
+               <children>
+                  <Pane prefHeight="80.0" styleClass="bg-dark" VBox.vgrow="NEVER">
+                     <children>
+                        <Label prefHeight="80.0" styleClass="fg-light" text="My To-Do List">
+                           <font>
+                              <Font size="36.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <ScrollPane VBox.vgrow="ALWAYS" />
+               </children>
+            </VBox>
+         </center>
       </BorderPane>
-      <ScrollPane hbarPolicy="NEVER" layoutY="125.0" prefHeight="575.0" prefWidth="1050.0" styleClass="bg-light" stylesheets="@gui.css" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="575.0" prefWidth="1049.0" styleClass="bg-light" stylesheets="@gui.css" />
-        </content>
-      </ScrollPane>
-      <Pane layoutY="25.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="1050.0" styleClass="bg-dark" stylesheets="@gui.css" />
    </children>
 </AnchorPane>
