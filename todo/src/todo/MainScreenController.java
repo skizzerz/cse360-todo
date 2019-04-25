@@ -6,14 +6,20 @@ package todo;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
+import javafx.geometry.Insets;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.EnumSet;
@@ -63,6 +69,12 @@ public class MainScreenController implements Initializable {
 
     @FXML // fx:id="listTitle"
     private TextField listTitle; // Value injected by FXMLLoader
+
+    @FXML // fx:id="listBox"
+    private VBox listBox; // Value injected by FXMLLoader
+
+    @FXML // fx:id="scrollPane"
+    private ScrollPane scrollPane; // Value injected by FXMLLoader
 
     @FXML
     void menuNew(ActionEvent event) {
@@ -174,10 +186,24 @@ public class MainScreenController implements Initializable {
     @FXML
     void listTitleClick(MouseEvent event) {
     	listTitle.setEditable(true);
+    	
+    	
     }
     
-    void listTitleEnter(ActionEvent event) {
-    	listTitle.setEditable(false);
+    @FXML
+    void listTitleEnter(KeyEvent event) {
+    	listTitle.setOnKeyReleased(enterPressed -> {
+  		  if (enterPressed.getCode() == KeyCode.ENTER){
+  		     listTitle.setEditable(false);
+  		     //Store list title
+  		     Program.getList().setName(listTitle.getText());
+  		  }
+  	});
+    }
+
+    @FXML
+    void newTaskAction(ActionEvent event) {
+
     }
 
     /**
@@ -190,13 +216,43 @@ public class MainScreenController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        ITodoList list = Program.getList();
+
         // Fix up list title
-        listTitle.setText(Program.getList().getName());
+        listTitle.setText(list.getName());
 
         // Check menu items corresponding to our current sort and filter
         ITodoListFilter filter = Program.getFilter();
         setSortMenuItem(filter.getSortBy(), filter.getSortDirection());
         setShowMenuItem(filter.getStatusFilter());
+
+        // add items to the list box
+        if (list.stream().count() > 0) {
+            redrawList();
+        } else {
+            // no items in the list; add a placeholder item for the user
+            // giving them directions to click the New Task button
+            Pane placeholderPane = new Pane();
+            placeholderPane.setPrefSize(listBox.getWidth(), Control.USE_COMPUTED_SIZE);
+            placeholderPane.getStyleClass().addAll("bg-white", "border-grey");
+            VBox.setVgrow(placeholderPane, Priority.NEVER);
+
+            Label placeholderLabel = new Label();
+            placeholderLabel.setText("There are no tasks in this list. Click New Task below to create one!");
+            placeholderLabel.setPadding(new Insets(5));
+            placeholderLabel.getStyleClass().addAll("list-item", "fg-dark");
+
+            placeholderPane.getChildren().add(placeholderLabel);
+            listBox.getChildren().add(0, placeholderPane);
+        }
+    }
+
+    /**
+     * Redraws the list; this should be called whenever we do a filter, sort, add/remove an item, or
+     * complete a drag-and-drop operation so that we can show the updated list in the UI.
+     */
+    private void redrawList() {
+
     }
 
     /**
