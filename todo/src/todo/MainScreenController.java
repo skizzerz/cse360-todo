@@ -11,6 +11,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
@@ -61,7 +62,7 @@ public class MainScreenController implements Initializable {
     private CheckMenuItem showInProgressItem; // Value injected by FXMLLoader
 
     @FXML // fx:id="listTitle"
-    private Label listTitle; // Value injected by FXMLLoader
+    private TextField listTitle; // Value injected by FXMLLoader
 
     @FXML
     void menuNew(ActionEvent event) {
@@ -172,7 +173,11 @@ public class MainScreenController implements Initializable {
 
     @FXML
     void listTitleClick(MouseEvent event) {
-
+    	listTitle.setEditable(true);
+    }
+    
+    void listTitleEnter(ActionEvent event) {
+    	listTitle.setEditable(false);
     }
 
     /**
