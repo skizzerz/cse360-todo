@@ -38,7 +38,7 @@ public class MainScreenController implements Initializable {
     @FXML // fx:id="sortStatusDescendingItem"
     private CheckMenuItem sortStatusDescendingItem; // Value injected by FXMLLoader
 
-    @FXML // fx:id="sortDueDateDescendingItem3"
+    @FXML // fx:id="sortDueDateDescendingItem"
     private CheckMenuItem sortDueDateDescendingItem; // Value injected by FXMLLoader
 
     @FXML // fx:id="showNotStartedItem"

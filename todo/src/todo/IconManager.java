@@ -11,6 +11,11 @@ public class IconManager {
 
     // Icon unicode points
     /**
+     * Not started "icon": just blank space
+     */
+    public final static String NOT_STARTED = " ";
+
+    /**
      * New icon: page with 3 lines
      */
     public final static String NEW = "\uf15c";
@@ -34,6 +39,11 @@ public class IconManager {
      * Cancelled icon: x
      */
     public final static String CANCELLED = "\uf00d";
+
+    /**
+     * Grip icon: 2x3 grid of dots
+     */
+    public final static String GRIP = "\uf58e";
 
     /**
      * Application icon: check list

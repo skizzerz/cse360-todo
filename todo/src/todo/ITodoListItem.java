@@ -4,7 +4,7 @@
 package todo;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * Represents an item in a to-do list.
@@ -57,40 +57,40 @@ public interface ITodoListItem extends Serializable {
 	 *
 	 * @return Current due date
 	 */
-	public Date getDueDate();
+	public LocalDate getDueDate();
 
 	/**
 	 * Sets the due date of this item.
 	 *
 	 * @param value New due date
 	 */
-	public void setDueDate(Date value);
+	public void setDueDate(LocalDate value);
 
 	/**
 	 * Retrieves when this item was started, may be null.
 	 *
 	 * @return Started date or null if the item was not yet started
 	 */
-	public Date getStartedDate();
+	public LocalDate getStartedDate();
 
 	/**
 	 * Sets the started date of this item.
 	 *
 	 * @param value New started date, or null to clear started date
 	 */
-	public void setStartedDate(Date value);
+	public void setStartedDate(LocalDate value);
 
 	/**
 	 * Retrieves when the item was finished, may be null.
 	 *
 	 * @return Finished date or null if the item is not yet finished
 	 */
-	public Date getFinishedDate();
+	public LocalDate getFinishedDate();
 
 	/**
 	 * Sets the finished date of the item.
 	 *
 	 * @param value New finished date, or null to clear
 	 */
-	public void setFinishedDate(Date value);
+	public void setFinishedDate(LocalDate value);
 }

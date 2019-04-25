@@ -3,7 +3,7 @@
 	Implementation of to-do list items*/
 package todo;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class TodoListItem implements ITodoListItem {
 	//Version ID for serialization
@@ -12,16 +12,16 @@ public class TodoListItem implements ITodoListItem {
 	private int priority = 0;
 	private String description = "";
 	private Status status = Status.NotStarted;
-	private Date dueDate = null;
-	private Date startDate = null;
-	private Date finishDate = null;
+	private LocalDate dueDate = null;
+	private LocalDate startDate = null;
+	private LocalDate finishDate = null;
 	//List Links
 	private TodoListItem next = null;
 	//Constructor
 	public TodoListItem() {
-		this("",0,currentDate(),Status.NotStarted);
+		this("",0, LocalDate.now(), Status.NotStarted);
 	}
-	public TodoListItem(String description,int priority,Date dueDate,Status status) {
+	public TodoListItem(String description, int priority, LocalDate dueDate, Status status) {
 		this.setDescription(description);
 		this.setPriority(priority);
 		this.setDueDate(dueDate);
@@ -40,30 +40,30 @@ public class TodoListItem implements ITodoListItem {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public Date getDueDate() {
+	public LocalDate getDueDate() {
 		return dueDate;
 	}
-	public void setDueDate(Date dueDate) {
+	public void setDueDate(LocalDate dueDate) {
 		this.dueDate = dueDate;
 	}
-	public Date getStartedDate() {
+	public LocalDate getStartedDate() {
 		if(status == Status.InProgress || status == Status.Finished) {
 			return startDate;
 		} else {
 			return null;
 		}
 	}
-	public void setStartedDate(Date startDate) {
+	public void setStartedDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
-	public Date getFinishedDate() {
+	public LocalDate getFinishedDate() {
 		if(status == Status.Finished) {
 			return finishDate;
 		} else {
 			return null;
 		}
 	}
-	public void setFinishedDate(Date finishDate) {
+	public void setFinishedDate(LocalDate finishDate) {
 		this.finishDate = finishDate;
 	}
 	public Status getStatus() {
@@ -85,12 +85,12 @@ public class TodoListItem implements ITodoListItem {
 	public void setStatus(Status status) {
 		this.status = status;
 		if(status == Status.InProgress) {
-			startDate = currentDate();
+			startDate = LocalDate.now();
 		} else if(status == Status.Finished) {
 			if(startDate == null) {
-				startDate = currentDate();
+				startDate = LocalDate.now();
 			}
-			finishDate = currentDate();
+			finishDate = LocalDate.now();
 		}
 	}
 	public String toString() {
@@ -162,9 +162,5 @@ public class TodoListItem implements ITodoListItem {
 	}
 	public void setNext(TodoListItem next) {
 		this.next = next;
-	}
-	//Helper Functions
-	public static Date currentDate() {
-		return new Date();
 	}
 }

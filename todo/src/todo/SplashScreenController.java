@@ -116,7 +116,7 @@ public class SplashScreenController implements Initializable {
      */
     private void createNewList() {
         TodoList list = new TodoList();
-        list.setName("My To-Do List");
+        list.setName("(Click to change list name)");
 
         Program.setList(list);
         Program.setDirtyFlag(true);

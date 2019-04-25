@@ -50,6 +50,17 @@
     -fx-font-size: 14pt;
 }
 
+.round {
+    -fx-background-radius: 5em;
+    -fx-border-width: 3px;
+    -fx-border-color: #707070;
+}
+
+.active {
+    -fx-border-color: #1995ad !important;
+    -fx-color: #1995ad !important;
+}
+
 /* ensure that content fits in the box regardless of scrollbar display status */
 .fit-content {
     -fx-fit-to-width: true;
