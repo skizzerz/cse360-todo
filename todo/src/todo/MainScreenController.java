@@ -32,6 +32,7 @@ import java.util.ResourceBundle;
  * Listeners and events for the main screen (list view)
  */
 public class MainScreenController implements Initializable {
+	
     @FXML // fx:id="sortDueDateAscendingItem"
     private CheckMenuItem sortDueDateAscendingItem; // Value injected by FXMLLoader
 
@@ -76,6 +77,9 @@ public class MainScreenController implements Initializable {
 
     @FXML // fx:id="scrollPane"
     private ScrollPane scrollPane; // Value injected by FXMLLoader
+    
+    @FXML
+    private Button newTaskButton;
 
     @FXML
     void menuNew(ActionEvent event) {
@@ -205,21 +209,26 @@ public class MainScreenController implements Initializable {
     void newTaskAction(ActionEvent event) {
     	removeNodeInVBox("PlaceHolder");
     	
-    	ListBoxItem newTask = new ListBoxItem();
     	TodoListItem newItem = new TodoListItem();
     	
-    	newTask.init(newItem, Program.getFilter().getSortBy());
-    	newTask.getHBox().getChildren().add(0, newTask.getDueDate());
-    	newTask.getHBox().getChildren().add(0, newTask.getPriority());
-    	newTask.getHBox().getChildren().add(0, newTask.getDescription());
-    	newTask.getHBox().getChildren().add(0, newTask.getStatusBubble());
-    	newTask.getHBox().getChildren().add(0, newTask.getGrip());
-
-    	VBox.setVgrow(newTask.getHBox(), Priority.SOMETIMES);
-    	
-    	listBox.getChildren().add(0, newTask.getHBox());
-    	
     	Program.getList().addItem(newItem);
+    	
+    	redrawList();
+    }
+    
+    //Draw an item from the list
+    void addItemToVBox(ListBoxItem item) {
+    	item.getHBox().getChildren().clear();
+    	
+    	item.getHBox().getChildren().add(0, item.getDueDate());
+    	item.getHBox().getChildren().add(0, item.getPriority());
+    	item.getHBox().getChildren().add(0, item.getDescription());
+    	item.getHBox().getChildren().add(0, item.getStatusBubble());
+    	item.getHBox().getChildren().add(0, item.getGrip());
+    	
+    	VBox.setVgrow(item.getHBox(), Priority.SOMETIMES);
+    	
+    	listBox.getChildren().add(0, item.getHBox());
     }
     
     //Removes node with given 'tag' (tag created by using .setUserData("your tag here") )
@@ -287,7 +296,45 @@ public class MainScreenController implements Initializable {
      * complete a drag-and-drop operation so that we can show the updated list in the UI.
      */
     private void redrawList() {
-
+    	//Clear List
+    	listBox.getChildren().clear();
+    	
+    	VBox.setVgrow(newTaskButton, Priority.SOMETIMES);
+    	listBox.getChildren().add(0,newTaskButton);
+    	
+    	//Repopulate based on filters
+    	for(ITodoListItem n : Program.getList().getList(Program.getFilter())) {
+    		
+    		//Show not started
+    		if(showNotStartedItem.isSelected()) {
+    			if(n.getStatus() == Status.NotStarted) {
+    				addItemToVBox(n.getListBoxItem());
+    			}
+    		}
+    		
+    		//
+    		if(showInProgressItem.isSelected()) {
+    			if(n.getStatus() == Status.InProgress) {
+    				addItemToVBox(n.getListBoxItem());
+    			}
+    		}
+    		
+    		if(showFinishedItem.isSelected()) {
+    			if(n.getStatus() == Status.Finished) {
+    				addItemToVBox(n.getListBoxItem());
+    			}
+    		}
+    		
+    		if(showCancelledItem.isSelected()) {
+    			if(n.getStatus() != Status.Cancelled) {
+    				addItemToVBox(n.getListBoxItem());
+    			}
+    		}
+    	}
+    	
+    	
+    	
+    	
     }
 
     /**

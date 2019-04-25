@@ -51,7 +51,7 @@ public class TodoListItem implements ITodoListItem {
 	}
 	public void createListBoxItem() {
 		guiItem = new ListBoxItem(priority, description, status, dueDate);
-		guiItem.init(Program.getFilter().getSortBy());
+		guiItem.init(this, Program.getFilter().getSortBy());
 	}
 	public ListBoxItem getListBoxItem() {
 		return guiItem;
