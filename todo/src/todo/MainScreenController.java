@@ -1,17 +1,26 @@
-//CSE 360 Project - Team 10
-//Noah Anderson, Adam Harvey, Adwith Malpe, Ryan Schmidt
-//Controls the main screen
+// CSE 360 Project - Team 10
+// Noah Anderson, Adam Harvey, Adwith Malpe, Ryan Schmidt
+// Listeners for the main (list view) screen
 package todo;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+ * Listeners and events for the main screen (list view)
+ */
 public class MainScreenController implements Initializable {
     @FXML // fx:id="sortDueDateAscendingItem"
     private CheckMenuItem sortDueDateAscendingItem; // Value injected by FXMLLoader
@@ -84,7 +93,9 @@ public class MainScreenController implements Initializable {
 
     @FXML
     void menuExit(ActionEvent event) {
-
+        if (Program.getDirtyFlag() && showUnsavedChangesPrompt()) {
+            Program.close();
+        }
     }
 
     @FXML
@@ -158,7 +169,7 @@ public class MainScreenController implements Initializable {
     }
 
     @FXML
-    void listTitleClick(ActionEvent event) {
+    void listTitleClick(MouseEvent event) {
 
     }
 
@@ -173,5 +184,40 @@ public class MainScreenController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+    }
+
+    /**
+     * Prompts the user that they have unsaved changes, and gives them an opportunity to save.
+     *
+     * If the user elects to save, that will be handled by this function as well.
+     *
+     * @return Returns true if the action that caused this prompt to appear should continue.
+     */
+    private boolean showUnsavedChangesPrompt() {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setHeaderText(null);
+        alert.setContentText("You have unsaved changes. If you do not save them before exiting, they will be lost.");
+
+        ButtonType saveButton = new ButtonType("Save and exit");
+        ButtonType exitButton = new ButtonType("Exit without saving");
+        ButtonType cancelButton = new ButtonType("Cancel");
+        alert.getButtonTypes().setAll(saveButton, exitButton, cancelButton);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent()) {
+            if (result.get() == saveButton) {
+                // TODO: SAVE THE LIST
+                return true;
+            } else if (result.get() == exitButton) {
+                // Exit without saving
+                return true;
+            } else if (result.get() == cancelButton) {
+                // user is cancelling, don't exit out
+                return false;
+            }
+        }
+
+        // no result present = user clicked x button to cancel out
+        return false;
     }
 }
