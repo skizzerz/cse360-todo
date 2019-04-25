@@ -110,9 +110,6 @@
                   <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" VBox.vgrow="ALWAYS">
                      <content>
                         <VBox fx:id="listBox" maxHeight="1.7976931348623157E308" prefWidth="1050.0" styleClass="bg-light">
-                           <padding>
-                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                           </padding>
                            <children>
                               <Button mnemonicParsing="false" onAction="#newTaskAction" text="+ New Task">
                                  <styleClass>

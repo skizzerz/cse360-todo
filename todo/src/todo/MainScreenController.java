@@ -6,10 +6,13 @@ package todo;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
@@ -206,11 +209,31 @@ public class MainScreenController implements Initializable {
 
         // add items to the list box
         if (list.stream().count() > 0) {
-
+            redrawList();
         } else {
             // no items in the list; add a placeholder item for the user
             // giving them directions to click the New Task button
+            Pane placeholderPane = new Pane();
+            placeholderPane.setPrefSize(listBox.getWidth(), Control.USE_COMPUTED_SIZE);
+            placeholderPane.getStyleClass().addAll("bg-white", "border-grey");
+            VBox.setVgrow(placeholderPane, Priority.NEVER);
+
+            Label placeholderLabel = new Label();
+            placeholderLabel.setText("There are no tasks in this list. Click New Task below to create one!");
+            placeholderLabel.setPadding(new Insets(5));
+            placeholderLabel.getStyleClass().addAll("list-item", "fg-dark");
+
+            placeholderPane.getChildren().add(placeholderLabel);
+            listBox.getChildren().add(0, placeholderPane);
         }
+    }
+
+    /**
+     * Redraws the list; this should be called whenever we do a filter, sort, add/remove an item, or
+     * complete a drag-and-drop operation so that we can show the updated list in the UI.
+     */
+    private void redrawList() {
+
     }
 
     /**
