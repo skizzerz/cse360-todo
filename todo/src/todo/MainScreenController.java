@@ -80,7 +80,9 @@ public class MainScreenController implements Initializable {
 
     @FXML
     void menuNew(ActionEvent event) {
-
+    	if(!Program.getDirtyFlag() || showUnsavedChangesPrompt()) {
+    		createNewList();
+    	}
     }
 
     @FXML
@@ -205,6 +207,8 @@ public class MainScreenController implements Initializable {
   		     listTitle.setEditable(false);
   		     //Store list title
   		     Program.getList().setName(listTitle.getText());
+  		     //Set the dirty bit for this change
+  		     Program.setDirtyFlag(true);
   		  }
   	});
     }
@@ -495,5 +499,23 @@ public class MainScreenController implements Initializable {
 				return false;
 			}
     	}
+    }
+    /**
+     * Sends the user to the main screen with a new, blank list
+     */
+    private void createNewList() {
+        TodoList list = new TodoList();
+        list.setName("(Click to change list name)");
+
+        Program.setList(list);
+        Program.setDirtyFlag(true);
+        Program.setFilter(new TodoListFilter());
+
+        try {
+            Program.changeScene("MainScreen.fxml");
+        } catch (Exception e) {
+            Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
+            alert.showAndWait();
+        }
     }
 }
