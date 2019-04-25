@@ -73,7 +73,7 @@ public class ListBoxItem extends HBox {
     	@Override
     	public void handle(MouseEvent event) {
     		BorderPane root = new BorderPane();
-    		Scene scene = new Scene(root, 400, 250);
+    		Scene scene = new Scene(root, 400, 210);
     		
     		calendar = new DatePicker(LocalDate.now());
     		DatePickerSkin datePickerSkin = new DatePickerSkin(calendar);
@@ -243,12 +243,13 @@ public class ListBoxItem extends HBox {
         // if sorting by due date, priority field takes former position of due date field.
         // Otherwise, it's either not shown, or shown as just a number
         if (activeSort == SortBy.DueDate) {
-            priority.setText("Priority " + priority);
+            priority.setText("Priority: " + priorityVal);
             priority.setPrefWidth(150);
             priority.setPadding(new Insets(5));
         } else {
-            priority.setText("");
+            priority.setText("Priority: " + priorityVal);
             priority.setPrefWidth(150);
+            priority.setPadding(new Insets(5));
         }
 
         switch (activeSort) {
