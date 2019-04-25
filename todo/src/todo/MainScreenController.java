@@ -15,6 +15,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
+import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -29,7 +31,7 @@ public class MainScreenController implements Initializable {
     private CheckMenuItem sortStatusDescendingItem; // Value injected by FXMLLoader
 
     @FXML // fx:id="sortDueDateDescendingItem3"
-    private CheckMenuItem sortDueDateDescendingItem3; // Value injected by FXMLLoader
+    private CheckMenuItem sortDueDateDescendingItem; // Value injected by FXMLLoader
 
     @FXML // fx:id="showNotStartedItem"
     private CheckMenuItem showNotStartedItem; // Value injected by FXMLLoader
@@ -183,7 +185,73 @@ public class MainScreenController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // Fix up list title
+        listTitle.setText(Program.getList().getName());
 
+        // Check menu items corresponding to our current sort and filter
+        ITodoListFilter filter = Program.getFilter();
+        setSortMenuItem(filter.getSortBy(), filter.getSortDirection());
+        setShowMenuItem(filter.getStatusFilter());
+    }
+
+    /**
+     * Set which sort menu item is shown as checked.
+     *
+     * @param sortBy Column to show as being sorted
+     * @param sortDirection Direction to show as being sorted
+     */
+    private void setSortMenuItem(SortBy sortBy, SortDirection sortDirection) {
+        sortPriorityAscendingItem.setSelected(false);
+        sortPriorityDescendingItem.setSelected(false);
+        sortStatusAscendingItem.setSelected(false);
+        sortStatusDescendingItem.setSelected(false);
+        sortDescriptionAscendingItem.setSelected(false);
+        sortDescriptionDescendingItem.setSelected(false);
+        sortDueDateAscendingItem.setSelected(false);
+        sortDueDateDescendingItem.setSelected(false);
+
+        switch (sortBy) {
+            case Priority:
+                if (sortDirection == SortDirection.Ascending) {
+                    sortPriorityAscendingItem.setSelected(true);
+                } else {
+                    sortPriorityDescendingItem.setSelected(true);
+                }
+                break;
+            case Status:
+                if (sortDirection == SortDirection.Ascending) {
+                    sortStatusAscendingItem.setSelected(true);
+                } else {
+                    sortStatusDescendingItem.setSelected(true);
+                }
+                break;
+            case Description:
+                if (sortDirection == SortDirection.Ascending) {
+                    sortDescriptionAscendingItem.setSelected(true);
+                } else {
+                    sortDescriptionDescendingItem.setSelected(true);
+                }
+                break;
+            case DueDate:
+                if (sortDirection == SortDirection.Ascending) {
+                    sortDueDateAscendingItem.setSelected(true);
+                } else {
+                    sortDueDateDescendingItem.setSelected(true);
+                }
+                break;
+        }
+    }
+
+    /**
+     * Set which statuses are listed in the Show menu as checked
+     *
+     * @param statuses Statuses to check
+     */
+    private void setShowMenuItem(EnumSet<Status> statuses) {
+        showNotStartedItem.setSelected(statuses.contains(Status.NotStarted));
+        showInProgressItem.setSelected(statuses.contains(Status.InProgress));
+        showFinishedItem.setSelected(statuses.contains(Status.Finished));
+        showCancelledItem.setSelected(statuses.contains(Status.Cancelled));
     }
 
     /**

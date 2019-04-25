@@ -115,9 +115,13 @@ public class SplashScreenController implements Initializable {
      * Sends the user to the main screen with a new, blank list
      */
     private void createNewList() {
-        Program.setList(new TodoList());
+        TodoList list = new TodoList();
+        list.setName("My To-Do List");
+
+        Program.setList(list);
         Program.setDirtyFlag(true);
         Program.setFilter(new TodoListFilter());
+
         try {
             Program.changeScene("MainScreen.fxml");
         } catch (Exception e) {

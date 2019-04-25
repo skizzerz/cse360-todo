@@ -67,7 +67,7 @@
                         <Menu mnemonicParsing="false" text="Due Date">
                           <items>
                               <CheckMenuItem fx:id="sortDueDateAscendingItem" mnemonicParsing="false" onAction="#menuSortDueDateAscending" text="Ascending" />
-                              <CheckMenuItem fx:id="sortDueDateDescendingItem3" mnemonicParsing="false" onAction="#menuSortDueDateDescending" text="Descending" />
+                              <CheckMenuItem fx:id="sortDueDateDescendingItem" mnemonicParsing="false" onAction="#menuSortDueDateDescending" text="Descending" />
                           </items>
                         </Menu>
                      </items>
