@@ -209,10 +209,17 @@ public class MainScreenController implements Initializable {
     	TodoListItem newItem = new TodoListItem();
     	
     	newTask.init(newItem, Program.getFilter().getSortBy());
+    	newTask.getHBox().getChildren().add(0, newTask.getDueDate());
+    	newTask.getHBox().getChildren().add(0, newTask.getPriority());
+    	newTask.getHBox().getChildren().add(0, newTask.getDescription());
+    	newTask.getHBox().getChildren().add(0, newTask.getStatusBubble());
+    	newTask.getHBox().getChildren().add(0, newTask.getGrip());
 
     	VBox.setVgrow(newTask.getHBox(), Priority.SOMETIMES);
     	
     	listBox.getChildren().add(0, newTask.getHBox());
+    	
+    	Program.getList().addItem(newItem);
     }
     
     //Removes node with given 'tag' (tag created by using .setUserData("your tag here") )

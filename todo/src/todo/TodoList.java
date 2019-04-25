@@ -45,12 +45,12 @@ public class TodoList implements ITodoList {
 		return returnable;
 	}
 	//Insertion Functions
-	public void addItem(ITodoListItem toInsert) {
-		toInsert = (TodoListItem)toInsert;
+	public void addItem(TodoListItem toInsert) {
+		//toInsert = (TodoListItem)toInsert;
 		//return addItem(toInsert);
-		addItem(toInsert);
+		addTodoItem(toInsert);
 	}
-	public boolean addItem(TodoListItem toInsert) {
+	public boolean addTodoItem(TodoListItem toInsert) {
 		if(!insert(toInsert)) {
 			return false;
 		}
@@ -80,11 +80,7 @@ public class TodoList implements ITodoList {
 		toInsert.setNext(null);
 		return true;
 	}
-	//Removal Functions
-	public void deleteItem(ITodoListItem toRemove) {
-		toRemove = (TodoListItem)toRemove;
-		deleteItem(toRemove);
-	}
+
 	public void deleteItem(TodoListItem toRemove) {
 		remove(toRemove);
 	}

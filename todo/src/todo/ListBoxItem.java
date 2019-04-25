@@ -4,22 +4,33 @@
 package todo;
 
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.DatePicker;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.text.DateFormat;
 import java.text.FieldPosition;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+
+import com.sun.javafx.scene.control.skin.DatePickerSkin;
 
 /**
  * GUI widget for ITodoListItem
@@ -33,6 +44,14 @@ public class ListBoxItem extends HBox {
     private HBox taskBox;
     private ITodoListItem item;
     private boolean isDraggable = false;
+    private DatePicker calendar;
+    
+    private int priorityVal = 0;
+	private String descriptionVal = "";
+	private Status status = Status.NotStarted;
+	private LocalDate dueDateVal = null;
+	private LocalDate startDate = null;
+	private LocalDate finishDate = null;
 
 
     EventHandler<MouseEvent> onClickDesc = new EventHandler<MouseEvent>() {
@@ -55,12 +74,77 @@ public class ListBoxItem extends HBox {
     	}
     };
     
+    EventHandler<MouseEvent> onClickDueDate = new EventHandler<MouseEvent>() {
+    	@Override
+    	public void handle(MouseEvent event) {
+    		BorderPane root = new BorderPane();
+    		Scene scene = new Scene(root, 400, 250);
+    		
+    		calendar = new DatePicker(LocalDate.now());
+    		DatePickerSkin datePickerSkin = new DatePickerSkin(calendar);
+    		Node popupContent = datePickerSkin.getPopupContent();
+    		
+    		
+    	
+    		root.setCenter(popupContent);
+    		
+    		Stage calendarPopUp = new Stage();
+    		calendarPopUp.initModality(Modality.APPLICATION_MODAL);
+    		calendarPopUp.initOwner(Program.getStage());
+    		
+    		calendarPopUp.setScene(scene);
+    		calendarPopUp.show();
+    		
+    		calendar.valueProperty().addListener((observable, oldValue, newValue) -> {
+    			item.setDueDate(newValue);
+    			calendarPopUp.hide();
+    		});
+    	}
+    };
+    
+    
     public HBox getHBox() {
     	return taskBox;
     }
-
+    public Button getStatusBubble() {
+    	return statusBubble;
+    }
+    public TextField getDescription() {
+    	return description;
+    }
+    public Label getDueDate() {
+    	return dueDate;
+    }
+    public Label getGrip() {
+    	return grip;
+    }
+    public Label getPriority() {
+    	return priority;
+    }
     
-    public ListBoxItem() {
+    public void setDescription(String desc) {
+    	descriptionVal = desc;
+    }
+    public void setDueDate(LocalDate dueDate) {
+    	dueDateVal = dueDate;
+    }
+    public void setPriority(int prio) {
+    	priorityVal = prio;
+    }
+    public void setStatus(Status stat) {
+    	status = stat;
+    }
+    
+    
+    
+    public ListBoxItem(int prio, String desc, Status stat, LocalDate due) {
+    	//Set data values
+    	this.setDescription(desc);
+    	this.setDueDate(due);
+    	this.setPriority(prio);
+    	this.setStatus(stat);
+    	
+    	
         // init child controls
     	
     	taskBox = new HBox();
@@ -78,6 +162,7 @@ public class ListBoxItem extends HBox {
         description.setEditable(false);
         description.getStyleClass().addAll("fg-dark", "list-item", "no-chrome");
         description.setCursor(Cursor.TEXT);
+        description.setPrefWidth(800);
         description.addEventFilter(MouseEvent.MOUSE_CLICKED, onClickDesc); //Add event filters
         description.addEventFilter(KeyEvent.KEY_RELEASED, exitDesc);
         HBox.setHgrow(description, Priority.ALWAYS);
@@ -86,6 +171,8 @@ public class ListBoxItem extends HBox {
         dueDate.getStyleClass().addAll("fg-dark", "list-item");
         dueDate.setCursor(Cursor.HAND);
         dueDate.setPrefWidth(200);
+        dueDate.setPadding(new Insets(5));
+        dueDate.addEventFilter(MouseEvent.MOUSE_CLICKED, onClickDueDate);
         HBox.setHgrow(dueDate, Priority.NEVER);
 
         priority = new Label();
@@ -99,6 +186,7 @@ public class ListBoxItem extends HBox {
         grip.setText(IconManager.GRIP);
         grip.setCursor(Cursor.MOVE);
         grip.setPrefWidth(50);
+        grip.setPadding(new Insets(5));
         HBox.setHgrow(grip, Priority.NEVER);
 
         // apply base styling
@@ -118,12 +206,12 @@ public class ListBoxItem extends HBox {
      * @param listItem Item to populate control with
      * @param activeSort How the list is currently being sorted
      */
-    public void init(ITodoListItem listItem, SortBy activeSort) {
-        item = listItem;
-        DateFormat dateFormatNoYear = new SimpleDateFormat("MM/dd");
-        DateFormat dateFormatWithYear = new SimpleDateFormat("MM/dd/yyyy");
-
-        switch (item.getStatus()) {
+    public void init(SortBy activeSort) {
+        DateTimeFormatter dateFormatNoYear = DateTimeFormatter.ofPattern ("MM/dd");
+        DateTimeFormatter dateFormatWithYear = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        
+        
+        switch (status) {
             case NotStarted:
                 statusBubble.setText(IconManager.NOT_STARTED);
                 break;
@@ -138,21 +226,23 @@ public class ListBoxItem extends HBox {
                 break;
         }
 
-        description.setText(item.getDescription());
-        if (item.getDueDate().getYear() == LocalDate.now().getYear()) {
-            dueDate.setText("Due " + item.getDueDate());
+        description.setText(descriptionVal);
+        
+        if (dueDateVal.getYear() == LocalDate.now().getYear()) {
+            dueDate.setText("Due " + dueDateVal.format(dateFormatNoYear));
         } else {
-            dueDate.setText("Due " + item.getDueDate());
+            dueDate.setText("Due " + dueDateVal.format(dateFormatWithYear));
         }
 
         // if sorting by due date, priority field takes former position of due date field.
         // Otherwise, it's either not shown, or shown as just a number
         if (activeSort == SortBy.DueDate) {
-            priority.setText("Priority " + item.getPriority().toString());
+            priority.setText("Priority " + priority);
             priority.setPrefWidth(200);
+            priority.setPadding(new Insets(5));
         } else {
-            priority.setText(item.getPriority().toString());
-            priority.setPrefWidth(50);
+            priority.setText("");
+            priority.setPrefWidth(200);
         }
 
         switch (activeSort) {

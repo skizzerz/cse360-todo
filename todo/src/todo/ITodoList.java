@@ -58,12 +58,12 @@ public interface ITodoList extends Serializable {
 	 *
 	 * @param item Item to add
 	 */
-	public void addItem(ITodoListItem item);
+	public void addItem(TodoListItem item);
 
 	/**
 	 * Deletes the item from the to-do list.
 	 *
 	 * @param item Item to delete
 	 */
-	public void deleteItem(ITodoListItem item);
+	public void deleteItem(TodoListItem item);
 }
