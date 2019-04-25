@@ -100,6 +100,13 @@ public class ListBoxItem extends HBox {
     	}
     };
     
+    EventHandler<MouseEvent> onClickStatusBubble = new EventHandler<MouseEvent>() {
+    	@Override
+    	public void handle(MouseEvent event) {
+    		
+    		
+    	}
+    };
     
     public HBox getHBox() {
     	return taskBox;

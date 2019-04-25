@@ -78,6 +78,8 @@ public class MainScreenController implements Initializable {
     @FXML
     private Button newTaskButton;
 
+    private ITodoListFilter filter = new TodoListFilter();
+    
     @FXML
     void menuNew(ActionEvent event) {
 
@@ -125,42 +127,66 @@ public class MainScreenController implements Initializable {
 
     @FXML
     void menuSortPriorityAscending(ActionEvent event) {
-
+    	filter.setSortBy(SortBy.Priority);
+    	filter.setSortDirection(SortDirection.Ascending);
+    	setSortMenuItem(SortBy.Priority, SortDirection.Ascending);
+    	redrawList();
     }
 
     @FXML
     void menuSortPriorityDescending(ActionEvent event) {
-
+    	filter.setSortBy(SortBy.Priority);
+    	filter.setSortDirection(SortDirection.Descending);
+    	setSortMenuItem(SortBy.Priority, SortDirection.Descending);
+    	redrawList();
     }
 
     @FXML
     void menuSortStatusAscending(ActionEvent event) {
-
+    	filter.setSortBy(SortBy.Status);
+    	filter.setSortDirection(SortDirection.Ascending);
+    	setSortMenuItem(SortBy.Status, SortDirection.Ascending);
+    	redrawList();
     }
 
     @FXML
     void menuSortStatusDescending(ActionEvent event) {
-
+    	filter.setSortBy(SortBy.Status);
+    	filter.setSortDirection(SortDirection.Descending);
+    	setSortMenuItem(SortBy.Status, SortDirection.Descending);
+    	redrawList();
     }
 
     @FXML
     void menuSortDescriptionAscending(ActionEvent event) {
-
+    	filter.setSortBy(SortBy.Description);
+    	filter.setSortDirection(SortDirection.Ascending);
+    	setSortMenuItem(SortBy.Description, SortDirection.Ascending);
+    	redrawList();
     }
 
     @FXML
     void menuSortDescriptionDescending(ActionEvent event) {
-
+    	filter.setSortBy(SortBy.Description);
+    	filter.setSortDirection(SortDirection.Descending);
+    	setSortMenuItem(SortBy.Description, SortDirection.Descending);
+    	redrawList();
     }
 
     @FXML
     void menuSortDueDateAscending(ActionEvent event) {
-
+    	filter.setSortBy(SortBy.DueDate);
+    	filter.setSortDirection(SortDirection.Ascending);
+    	setSortMenuItem(SortBy.DueDate, SortDirection.Ascending);
+    	redrawList();
     }
 
     @FXML
     void menuSortDueDateDescending(ActionEvent event) {
-
+    	filter.setSortBy(SortBy.DueDate);
+    	filter.setSortDirection(SortDirection.Descending);
+    	setSortMenuItem(SortBy.DueDate, SortDirection.Descending);
+    	redrawList();
     }
 
     @FXML
@@ -233,7 +259,7 @@ public class MainScreenController implements Initializable {
     	
     	VBox.setVgrow(item.getHBox(), Priority.SOMETIMES);
     	
-    	listBox.getChildren().add(0, item.getHBox());
+    	listBox.getChildren().add(item.getHBox());
     }
     
     //Removes node with given 'tag' (tag created by using .setUserData("your tag here") )
@@ -304,11 +330,9 @@ public class MainScreenController implements Initializable {
     	//Clear List
     	listBox.getChildren().clear();
     	
-    	VBox.setVgrow(newTaskButton, Priority.SOMETIMES);
-    	listBox.getChildren().add(0,newTaskButton);
     	
     	//Repopulate based on filters
-    	for(ITodoListItem n : Program.getList().getList(Program.getFilter())) {
+    	for(ITodoListItem n : Program.getList().getList(filter)) {
     		
     		//Show not started
     		if(showNotStartedItem.isSelected()) {
@@ -337,6 +361,8 @@ public class MainScreenController implements Initializable {
     		}
     	}
     	
+    	VBox.setVgrow(newTaskButton, Priority.SOMETIMES);
+    	listBox.getChildren().add(newTaskButton);
     	
     	
     	
