@@ -19,6 +19,7 @@ public class Program extends Application {
     private ITodoList list = null;
     private ITodoListFilter filter = null;
     private boolean dirtyFlag = false;
+    private String filename = null;
 
     /**
      * Main entry point to the program
@@ -153,5 +154,28 @@ public class Program extends Application {
      */
     public static void setFilter(ITodoListFilter value) {
         instance.filter = value;
+    }
+
+    /**
+     * Gets the filename that regular save actions save to.
+     *
+     * If null, indicates no filename is set. In that case,
+     * treat the "Save" action as if it were "Save As" so the user is
+     * prompted to choose a filename. Then, call setFilename() with the chosen
+     * name so it is remembered in the future.
+     *
+     * @return Filename or null
+     */
+    public static String getFilename() {
+        return instance.filename;
+    }
+
+    /**
+     * Sets the filename that regular save actions save to
+     *
+     * @param value Filename
+     */
+    public static void setFilename(String value) {
+        instance.filename = value;
     }
 }
