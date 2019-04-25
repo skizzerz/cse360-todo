@@ -17,8 +17,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import jdk.nashorn.internal.runtime.linker.JavaAdapterFactory;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -93,14 +98,8 @@ public class MainScreenController implements Initializable {
     }
 
     @FXML
-    void menuClose(ActionEvent event) {
-    	if(!Program.getDirtyFlag() || showUnsavedChangesPrompt()) {
-    		try {
-				Program.changeScene("SplashScreen.fxml");
-			} catch (Exception e) {
-				Program.close();
-			}
-    	}
+    void menuClose(ActionEvent event) throws Exception{
+		Program.changeScene("SplashScreen.fxml");
     }
 
     @FXML
@@ -186,13 +185,16 @@ public class MainScreenController implements Initializable {
     }
 
     @FXML
-    void menuUserGuide(ActionEvent event) {
-
+    void menuUserGuide(ActionEvent event) throws Exception {
+		java.awt.Desktop.getDesktop().browse(new URI("https://drive.google.com/file/d/1wi3M6ad1Fy0sIpJA9fJFJLoAceUZ-tly/view?usp=sharing"));
     }
 
     @FXML
-    void menuAbout(ActionEvent event) {
-    	
+    void menuAbout(ActionEvent event) throws Exception {
+    	Stage about = Program.getModal("AboutScreen.fxml");
+        about.setResizable(false);
+        about.setTitle("About To-Do List");
+        about.show();
     }
 
     @FXML
