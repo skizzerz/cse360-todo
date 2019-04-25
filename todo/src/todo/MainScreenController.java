@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 
@@ -201,9 +202,15 @@ public class MainScreenController implements Initializable {
   	});
     }
 
-    @FXML
-    void newTaskAction(ActionEvent event) {
+    //Removes node with given 'tag' (tag created by using .setUserData("your tag here") )
+    //Tag of placeHolder node is "PlaceHolder"
+    void removeNodeInVBox(String nodeData) {
 
+    	for (Node n : listBox.getChildren()) {
+    		if (nodeData.equals(n.getUserData())) {
+    			listBox.getChildren().remove(n);
+    		}
+    	}
     }
 
     /**
@@ -233,6 +240,7 @@ public class MainScreenController implements Initializable {
             // no items in the list; add a placeholder item for the user
             // giving them directions to click the New Task button
             Pane placeholderPane = new Pane();
+            placeholderPane.setUserData("PlaceHolder");
             placeholderPane.setPrefSize(listBox.getWidth(), Control.USE_COMPUTED_SIZE);
             placeholderPane.getStyleClass().addAll("bg-white", "border-grey");
             VBox.setVgrow(placeholderPane, Priority.NEVER);
