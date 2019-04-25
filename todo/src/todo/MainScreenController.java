@@ -160,22 +160,22 @@ public class MainScreenController implements Initializable {
 
     @FXML
     void menuShowNotStarted(ActionEvent event) {
-
+    	redrawList();
     }
 
     @FXML
     void menuShowInProgress(ActionEvent event) {
-
+    	redrawList();
     }
 
     @FXML
     void menuShowFinished(ActionEvent event) {
-
+    	redrawList();
     }
 
     @FXML
     void menuShowCancelled(ActionEvent event) {
-
+    	redrawList();
     }
 
     @FXML
@@ -295,7 +295,7 @@ public class MainScreenController implements Initializable {
      * Redraws the list; this should be called whenever we do a filter, sort, add/remove an item, or
      * complete a drag-and-drop operation so that we can show the updated list in the UI.
      */
-    private void redrawList() {
+    public void redrawList() {
     	//Clear List
     	listBox.getChildren().clear();
     	

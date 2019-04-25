@@ -92,8 +92,11 @@ public class ListBoxItem extends HBox {
     		
     		calendar.valueProperty().addListener((observable, oldValue, newValue) -> {
     			item.setDueDate(newValue);
+    			setDueDate(newValue);
+    			changeDueDateText();
     			calendarPopUp.hide();
     		});
+    		
     	}
     };
     
@@ -194,6 +197,19 @@ public class ListBoxItem extends HBox {
         //taskBox.getChildren().add(0, dueDate);
 
     }
+    
+    //Updates due date label to what is stored in duedateval
+    private void changeDueDateText() {
+    	DateTimeFormatter dateFormatNoYear = DateTimeFormatter.ofPattern ("MM/dd");
+        DateTimeFormatter dateFormatWithYear = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        
+    	
+    	if (dueDateVal.getYear() == LocalDate.now().getYear()) {
+            dueDate.setText("Due " + dueDateVal.format(dateFormatNoYear));
+        } else {
+            dueDate.setText("Due " + dueDateVal.format(dateFormatWithYear));
+        }
+    }
 
     /**
      * Initializes the control with the passed-in data
@@ -203,11 +219,6 @@ public class ListBoxItem extends HBox {
      */
     public void init(TodoListItem item, SortBy activeSort) {
         this.item = item;
-    	
-    	
-    	DateTimeFormatter dateFormatNoYear = DateTimeFormatter.ofPattern ("MM/dd");
-        DateTimeFormatter dateFormatWithYear = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        
         
         switch (status) {
             case NotStarted:
@@ -226,21 +237,18 @@ public class ListBoxItem extends HBox {
 
         description.setText(descriptionVal);
         
-        if (dueDateVal.getYear() == LocalDate.now().getYear()) {
-            dueDate.setText("Due " + dueDateVal.format(dateFormatNoYear));
-        } else {
-            dueDate.setText("Due " + dueDateVal.format(dateFormatWithYear));
-        }
-
+        changeDueDateText();
+        
+        
         // if sorting by due date, priority field takes former position of due date field.
         // Otherwise, it's either not shown, or shown as just a number
         if (activeSort == SortBy.DueDate) {
             priority.setText("Priority " + priority);
-            priority.setPrefWidth(200);
+            priority.setPrefWidth(150);
             priority.setPadding(new Insets(5));
         } else {
             priority.setText("");
-            priority.setPrefWidth(200);
+            priority.setPrefWidth(150);
         }
 
         switch (activeSort) {
