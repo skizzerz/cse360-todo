@@ -14,6 +14,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.net.URI;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -96,7 +97,12 @@ public class SplashScreenController implements Initializable {
      */
     @FXML
     void menuUserGuide(ActionEvent event) {
-        // TODO: IMPLEMENT THIS (open browser to user guide pdf or something)
+    	try {
+			java.awt.Desktop.getDesktop().browse(new URI("https://drive.google.com/file/d/1wi3M6ad1Fy0sIpJA9fJFJLoAceUZ-tly/view?usp=sharing"));
+		} catch (Exception e) {
+			Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
+            alert.showAndWait();
+		}
     }
 
     /**
