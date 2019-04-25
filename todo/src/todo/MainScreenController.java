@@ -202,6 +202,11 @@ public class MainScreenController implements Initializable {
   	});
     }
 
+    @FXML
+    void newTaskAction(ActionEvent event) {
+    	
+    }
+    
     //Removes node with given 'tag' (tag created by using .setUserData("your tag here") )
     //Tag of placeHolder node is "PlaceHolder"
     void removeNodeInVBox(String nodeData) {

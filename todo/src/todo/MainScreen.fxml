@@ -94,7 +94,7 @@
                <children>
                   <Pane prefHeight="80.0" styleClass="bg-dark" VBox.vgrow="NEVER">
                      <children>
-                        <TextField fx:id="listTitle" editable="false" layoutY="2.0" onKeyPressed="#listTitleEnter" onKeyTyped="#listTitleEnter" onMouseClicked="#listTitleClick" stylesheets="@gui.css" text="Click to enter name">
+                        <TextField fx:id="listTitle" editable="false" layoutY="2.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onKeyPressed="#listTitleEnter" onKeyTyped="#listTitleEnter" onMouseClicked="#listTitleClick" prefHeight="77.0" prefWidth="1050.0" stylesheets="@gui.css" text="Click to enter name">
                            <font>
                               <Font size="36.0" />
                            </font>
@@ -109,7 +109,7 @@
                      <content>
                         <VBox fx:id="listBox" maxHeight="1.7976931348623157E308" prefWidth="1050.0" styleClass="bg-light">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#newTaskAction" text="+ New Task">
+                              <Button mnemonicParsing="false" text="+ New Task">
                                  <styleClass>
                                     <String fx:value="fg-light" />
                                     <String fx:value="no-chrome" />
