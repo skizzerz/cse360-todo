@@ -6,13 +6,11 @@ package todo;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.CheckMenuItem;
-import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.EnumSet;
@@ -62,6 +60,12 @@ public class MainScreenController implements Initializable {
 
     @FXML // fx:id="listTitle"
     private Label listTitle; // Value injected by FXMLLoader
+
+    @FXML // fx:id="listBox"
+    private VBox listBox; // Value injected by FXMLLoader
+
+    @FXML // fx:id="scrollPane"
+    private ScrollPane scrollPane; // Value injected by FXMLLoader
 
     @FXML
     void menuNew(ActionEvent event) {
@@ -175,6 +179,11 @@ public class MainScreenController implements Initializable {
 
     }
 
+    @FXML
+    void newTaskAction(ActionEvent event) {
+
+    }
+
     /**
      * Called to initialize a controller after its root element has been
      * completely processed.
@@ -185,13 +194,23 @@ public class MainScreenController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        ITodoList list = Program.getList();
+
         // Fix up list title
-        listTitle.setText(Program.getList().getName());
+        listTitle.setText(list.getName());
 
         // Check menu items corresponding to our current sort and filter
         ITodoListFilter filter = Program.getFilter();
         setSortMenuItem(filter.getSortBy(), filter.getSortDirection());
         setShowMenuItem(filter.getStatusFilter());
+
+        // add items to the list box
+        if (list.stream().count() > 0) {
+
+        } else {
+            // no items in the list; add a placeholder item for the user
+            // giving them directions to click the New Task button
+        }
     }
 
     /**

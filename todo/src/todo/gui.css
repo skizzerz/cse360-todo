@@ -13,6 +13,11 @@
     -fx-background-color: #a1d6e2;
 }
 
+/* this sets the background inside of a ScrollPane's viewport as well */
+.bg-light .viewport {
+    -fx-background-color: #a1d6e2;
+}
+
 /* apply a dark blue background color */
 .bg-dark {
     -fx-background-color: #1995ad;
@@ -37,5 +42,19 @@
 
 .status-icon {
     -fx-font-family: "Font Awesome 5 Free Solid";
-    -fx-font-size: 24pt;
+    -fx-font-size: 16pt;
+}
+
+/* ensure that content fits in the box regardless of scrollbar display status */
+.fit-content {
+    -fx-fit-to-width: true;
+}
+
+/* get rid of button chrome for a cleaner UI */
+.no-chrome {
+    -fx-background-color: transparent;
+}
+
+.list-item {
+    -fx-font-size: 16pt;
 }
