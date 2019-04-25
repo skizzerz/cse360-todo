@@ -57,6 +57,9 @@
                         <String fx:value="fg-light" />
                         <String fx:value="splash-icon" />
                      </styleClass>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </Button>
                   <Button fx:id="openListButton" alignment="CENTER" mnemonicParsing="false" onAction="#openList" text="." GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <styleClass>
@@ -64,6 +67,9 @@
                         <String fx:value="fg-light" />
                         <String fx:value="splash-icon" />
                      </styleClass>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </Button>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="fg-dark" text="New List" GridPane.rowIndex="2">
                      <font>

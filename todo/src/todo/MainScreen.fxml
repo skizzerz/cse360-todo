@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.input.*?>
@@ -97,13 +98,16 @@
                <children>
                   <Pane prefHeight="80.0" styleClass="bg-dark" VBox.vgrow="NEVER">
                      <children>
-                        <Label prefHeight="80.0" styleClass="fg-light" text="My To-Do List">
+                        <Label fx:id="listTitle" onMouseClicked="#listTitleClick" prefHeight="80.0" styleClass="fg-light" text="My To-Do List">
                            <font>
                               <Font size="36.0" />
                            </font>
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
+                           <cursor>
+                              <Cursor fx:constant="TEXT" />
+                           </cursor>
                         </Label>
                      </children>
                   </Pane>

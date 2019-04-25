@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.Label;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -47,6 +48,9 @@ public class MainScreenController implements Initializable {
 
     @FXML // fx:id="showInProgressItem"
     private CheckMenuItem showInProgressItem; // Value injected by FXMLLoader
+
+    @FXML // fx:id="listTitle"
+    private Label listTitle; // Value injected by FXMLLoader
 
     @FXML
     void menuNew(ActionEvent event) {
@@ -150,6 +154,11 @@ public class MainScreenController implements Initializable {
 
     @FXML
     void menuAbout(ActionEvent event) {
+
+    }
+
+    @FXML
+    void listTitleClick(ActionEvent event) {
 
     }
 
