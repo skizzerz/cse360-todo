@@ -6,6 +6,8 @@ package todo;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import javafx.scene.Node;
+
 /**
  * Represents an item in a to-do list.
  */
@@ -93,4 +95,6 @@ public interface ITodoListItem extends Serializable {
 	 * @param value New finished date, or null to clear
 	 */
 	public void setFinishedDate(LocalDate value);
+
+	public ListBoxItem getListBoxItem();
 }

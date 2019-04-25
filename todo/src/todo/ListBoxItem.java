@@ -18,17 +18,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.text.DateFormat;
-import java.text.FieldPosition;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+
 
 import com.sun.javafx.scene.control.skin.DatePickerSkin;
 
@@ -42,7 +37,7 @@ public class ListBoxItem extends HBox {
     private Label priority;
     private Label grip;
     private HBox taskBox;
-    private ITodoListItem item;
+    private TodoListItem item;
     private boolean isDraggable = false;
     private DatePicker calendar;
     
@@ -193,10 +188,10 @@ public class ListBoxItem extends HBox {
         getStyleClass().addAll("bg-white", "border-grey");
         
         //Add elements to HBox
-        taskBox.getChildren().add(0, grip);
-        taskBox.getChildren().add(0, statusBubble);
-        taskBox.getChildren().add(0, description);
-        taskBox.getChildren().add(0, dueDate);
+        //taskBox.getChildren().add(0, grip);
+        //taskBox.getChildren().add(0, statusBubble);
+        //taskBox.getChildren().add(0, description);
+        //taskBox.getChildren().add(0, dueDate);
 
     }
 
@@ -206,8 +201,11 @@ public class ListBoxItem extends HBox {
      * @param listItem Item to populate control with
      * @param activeSort How the list is currently being sorted
      */
-    public void init(SortBy activeSort) {
-        DateTimeFormatter dateFormatNoYear = DateTimeFormatter.ofPattern ("MM/dd");
+    public void init(TodoListItem item, SortBy activeSort) {
+        this.item = item;
+    	
+    	
+    	DateTimeFormatter dateFormatNoYear = DateTimeFormatter.ofPattern ("MM/dd");
         DateTimeFormatter dateFormatWithYear = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         
         
@@ -248,15 +246,15 @@ public class ListBoxItem extends HBox {
         switch (activeSort) {
             case Priority:
                 isDraggable = true;
-                getChildren().addAll(grip, statusBubble, description, dueDate);
+                //getChildren().addAll(grip, statusBubble, description, dueDate);
                 break;
             case DueDate:
                 isDraggable = false;
-                getChildren().addAll(statusBubble, description, priority);
+                //getChildren().addAll(statusBubble, description, priority);
                 break;
             case Description:
                 isDraggable = false;
-                getChildren().addAll(priority, statusBubble, description, dueDate);
+                //getChildren().addAll(priority, statusBubble, description, dueDate);
                 break;
         }
     }
