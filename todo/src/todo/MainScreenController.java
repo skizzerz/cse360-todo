@@ -187,8 +187,6 @@ public class MainScreenController implements Initializable {
     @FXML
     void listTitleClick(MouseEvent event) {
     	listTitle.setEditable(true);
-    	
-    	
     }
     
     @FXML
@@ -202,19 +200,36 @@ public class MainScreenController implements Initializable {
   	});
     }
 
+    //Add new item
     @FXML
     void newTaskAction(ActionEvent event) {
+    	removeNodeInVBox("PlaceHolder");
     	
+    	ListBoxItem newTask = new ListBoxItem();
+    	TodoListItem newItem = new TodoListItem();
+    	
+    	newTask.init(newItem, Program.getFilter().getSortBy());
+
+    	VBox.setVgrow(newTask.getHBox(), Priority.SOMETIMES);
+    	
+    	listBox.getChildren().add(0, newTask.getHBox());
     }
     
     //Removes node with given 'tag' (tag created by using .setUserData("your tag here") )
     //Tag of placeHolder node is "PlaceHolder"
     void removeNodeInVBox(String nodeData) {
-
+    	boolean found = false;
+    	Node del = null;
+    	
     	for (Node n : listBox.getChildren()) {
     		if (nodeData.equals(n.getUserData())) {
-    			listBox.getChildren().remove(n);
+    			del = n;
+    			found = true;
     		}
+    	}
+    	
+    	if(found == true) {
+    		listBox.getChildren().remove(del);
     	}
     }
 

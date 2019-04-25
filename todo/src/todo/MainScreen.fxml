@@ -109,7 +109,7 @@
                      <content>
                         <VBox fx:id="listBox" maxHeight="1.7976931348623157E308" prefWidth="1050.0" styleClass="bg-light">
                            <children>
-                              <Button mnemonicParsing="false" text="+ New Task">
+                              <Button mnemonicParsing="false" onAction="#newTaskAction" text="+ New Task">
                                  <styleClass>
                                     <String fx:value="fg-light" />
                                     <String fx:value="no-chrome" />

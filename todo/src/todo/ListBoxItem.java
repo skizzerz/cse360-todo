@@ -3,10 +3,14 @@
 // Wrapper around HBox to make it easier to work with items in our list
 package todo;
 
+import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
@@ -26,11 +30,43 @@ public class ListBoxItem extends HBox {
     private Label dueDate;
     private Label priority;
     private Label grip;
+    private HBox taskBox;
     private ITodoListItem item;
     private boolean isDraggable = false;
 
+
+    EventHandler<MouseEvent> onClickDesc = new EventHandler<MouseEvent>() {
+    	@Override
+    	public void handle(MouseEvent event) {
+    		description.setEditable(true);
+    	}
+    };
+    
+    EventHandler<KeyEvent> exitDesc = new EventHandler<KeyEvent>() {
+    	@Override
+    	public void handle(KeyEvent event) {
+    		description.setOnKeyReleased(enterPressed -> {
+    	  		  if (enterPressed.getCode() == KeyCode.ENTER){
+    	  		     description.setEditable(false);
+    	  		     //Store Description
+    	  		     item.setDescription(description.getText());
+    	  		  }
+    		});
+    	}
+    };
+    
+    public HBox getHBox() {
+    	return taskBox;
+    }
+
+    
     public ListBoxItem() {
         // init child controls
+    	
+    	taskBox = new HBox();
+    	taskBox.setPrefSize(1050, 39);
+    	taskBox.getStyleClass().addAll("bg-white", "border-grey");
+    	
         statusBubble = new Button();
         statusBubble.getStyleClass().addAll("fg-dark", "status-icon", "no-chrome", "round");
         statusBubble.setText(IconManager.NOT_STARTED);
@@ -42,6 +78,8 @@ public class ListBoxItem extends HBox {
         description.setEditable(false);
         description.getStyleClass().addAll("fg-dark", "list-item", "no-chrome");
         description.setCursor(Cursor.TEXT);
+        description.addEventFilter(MouseEvent.MOUSE_CLICKED, onClickDesc); //Add event filters
+        description.addEventFilter(KeyEvent.KEY_RELEASED, exitDesc);
         HBox.setHgrow(description, Priority.ALWAYS);
 
         dueDate = new Label();
@@ -65,6 +103,13 @@ public class ListBoxItem extends HBox {
 
         // apply base styling
         getStyleClass().addAll("bg-white", "border-grey");
+        
+        //Add elements to HBox
+        taskBox.getChildren().add(0, grip);
+        taskBox.getChildren().add(0, statusBubble);
+        taskBox.getChildren().add(0, description);
+        taskBox.getChildren().add(0, dueDate);
+
     }
 
     /**
@@ -75,8 +120,8 @@ public class ListBoxItem extends HBox {
      */
     public void init(ITodoListItem listItem, SortBy activeSort) {
         item = listItem;
-        DateFormat dateFormatNoYear = new SimpleDateFormat("M/d");
-        DateFormat dateFormatWithYear = new SimpleDateFormat("M/d/yy");
+        DateFormat dateFormatNoYear = new SimpleDateFormat("MM/dd");
+        DateFormat dateFormatWithYear = new SimpleDateFormat("MM/dd/yyyy");
 
         switch (item.getStatus()) {
             case NotStarted:
@@ -95,9 +140,9 @@ public class ListBoxItem extends HBox {
 
         description.setText(item.getDescription());
         if (item.getDueDate().getYear() == LocalDate.now().getYear()) {
-            dueDate.setText("Due " + dateFormatNoYear.format(item.getDueDate()));
+            dueDate.setText("Due " + item.getDueDate());
         } else {
-            dueDate.setText("Due " + dateFormatWithYear.format(item.getDueDate()));
+            dueDate.setText("Due " + item.getDueDate());
         }
 
         // if sorting by due date, priority field takes former position of due date field.
@@ -125,4 +170,5 @@ public class ListBoxItem extends HBox {
                 break;
         }
     }
+    
 }

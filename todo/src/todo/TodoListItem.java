@@ -15,10 +15,11 @@ public class TodoListItem implements ITodoListItem {
 	private LocalDate dueDate = null;
 	private LocalDate startDate = null;
 	private LocalDate finishDate = null;
+	
 	//List Links
 	private TodoListItem next = null;
 	//Constructor
-	public TodoListItem() {
+	public TodoListItem() { 
 		this("",0, LocalDate.now(), Status.NotStarted);
 	}
 	public TodoListItem(String description, int priority, LocalDate dueDate, Status status) {
