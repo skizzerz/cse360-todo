@@ -10,18 +10,15 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.CheckMenuItem;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 
+import java.io.File;
 import java.net.URL;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -88,22 +85,30 @@ public class MainScreenController implements Initializable {
 
     @FXML
     void menuOpen(ActionEvent event) {
-
+    	if(!Program.getDirtyFlag() || showUnsavedChangesPrompt()) {
+    		showOpenDialog();
+    	}
     }
 
     @FXML
     void menuClose(ActionEvent event) {
-
+    	if(!Program.getDirtyFlag() || showUnsavedChangesPrompt()) {
+    		try {
+				Program.changeScene("SplashScreen.fxml");
+			} catch (Exception e) {
+				Program.close();
+			}
+    	}
     }
 
     @FXML
     void menuSave(ActionEvent event) {
-
+    	saveToFilename();
     }
 
     @FXML
     void menuSaveAs(ActionEvent event) {
-
+    	showSaveAsDialog();
     }
 
     @FXML
@@ -113,7 +118,7 @@ public class MainScreenController implements Initializable {
 
     @FXML
     void menuExit(ActionEvent event) {
-        if (Program.getDirtyFlag() && showUnsavedChangesPrompt()) {
+        if (!Program.getDirtyFlag() || showUnsavedChangesPrompt()) {
             Program.close();
         }
     }
@@ -185,7 +190,7 @@ public class MainScreenController implements Initializable {
 
     @FXML
     void menuAbout(ActionEvent event) {
-
+    	
     }
 
     @FXML
@@ -417,8 +422,8 @@ public class MainScreenController implements Initializable {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent()) {
             if (result.get() == saveButton) {
-                // TODO: SAVE THE LIST
-                return true;
+                // Save the list
+            	saveToFilename();
             } else if (result.get() == exitButton) {
                 // Exit without saving
                 return true;
@@ -430,5 +435,65 @@ public class MainScreenController implements Initializable {
 
         // no result present = user clicked x button to cancel out
         return false;
+    }
+    /**
+     * Displays a dialog that allows the user to browse for and open a file
+     */
+    private void showOpenDialog() {
+        FileChooser chooser = new FileChooser();
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("To-Do Lists", "*.tdl"));
+
+        File file = chooser.showOpenDialog(Program.getStage());
+        if (file != null) {
+            try {
+                Program.setList(FileManager.loadFromFile(file));
+                Program.setFilename(file.getAbsolutePath());
+                Program.setDirtyFlag(false);
+                Program.setFilter(new TodoListFilter());
+                Program.changeScene("MainScreen.fxml");
+            } catch (Exception e) {
+                Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
+                alert.showAndWait();
+            }
+        }
+    }
+    /**
+     * Displays a dialog that allows the user to save a file at a location of their choosing
+     */
+    private boolean showSaveAsDialog() {
+    	FileChooser chooser = new FileChooser();
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("To-Do Lists", "*.tdl"));
+
+        File file = chooser.showSaveDialog(Program.getStage());
+        if (file != null) {
+            try {
+                FileManager.saveToFile(file,Program.getList());
+                Program.setFilename(file.getAbsolutePath());
+                Program.setDirtyFlag(false);
+                return true;
+            } catch (Exception e) {
+                Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
+                alert.showAndWait();
+            }
+        }
+    	return false;
+    }
+    /**
+     * Saves the list to the specified file, if such a filename exists.  If it does not, opens the "Save As" prompt.
+     * Returns true on a successful save to any path, false otherwise.
+     */
+    private boolean saveToFilename() {
+    	if(Program.getFilename() == null) {
+    		return showSaveAsDialog();
+    	} else {
+	    	try {
+	    		File savior = new File(Program.getFilename());
+				FileManager.saveToFile(savior,Program.getList());
+				Program.setDirtyFlag(false);
+				return true;
+			} catch (Exception e) {
+				return false;
+			}
+    	}
     }
 }
