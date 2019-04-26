@@ -7,9 +7,9 @@ import java.time.LocalDate;
 
 public class TodoListItem implements ITodoListItem {
 	//Version ID for serialization
-	private static final long serialVersionUID = 2;
+	private static final long serialVersionUID = 3;
 	//Basic Data
-	private int priority = 0;
+	private Integer priority = null;
 	private String description = "";
 	private Status status = Status.NotStarted;
 	private LocalDate dueDate = null;

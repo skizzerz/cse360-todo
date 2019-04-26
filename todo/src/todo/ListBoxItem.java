@@ -149,16 +149,17 @@ public class ListBoxItem extends HBox {
     		result.ifPresent(priority -> {
     			try {
     			    int newPriority = Integer.parseInt(priority);
-    			    // TODO: validate that newPriority is between 1 and N
-    				item.setPriority(newPriority);
+    			    Program.getList().setPriority(item, newPriority);
     				setPriorityLabel();
     				Program.setDirtyFlag(true);
     				controller.redrawList();
-    			}
-    			catch (Exception e) {
+    			} catch (NumberFormatException e) {
     				Alert alert = new Alert(AlertType.ERROR, "Value is not an integer!");
     				alert.show();
-    			}
+    			} catch (IllegalArgumentException e) {
+                    Alert alert = new Alert(AlertType.ERROR, e.getMessage());
+                    alert.show();
+                }
     		});
     	}
     };

@@ -54,16 +54,36 @@ public interface ITodoList extends Serializable {
 	}
 
 	/**
-	 * Adds the given item to the to-do list.
+	 * Adds the given item to the end of the to-do list.
 	 *
 	 * @param item Item to add
 	 */
-	public void addItem(TodoListItem item);
+	public void addItem(ITodoListItem item);
 
 	/**
 	 * Deletes the item from the to-do list.
 	 *
 	 * @param item Item to delete
 	 */
-	public void deleteItem(TodoListItem item);
+	public void deleteItem(ITodoListItem item);
+
+    /**
+     * Sets the priority of the given item.
+     * Throws an exception if the new priority is invalid (not null or between 1 and # of items)
+     * All other items have priority re-ordered as necessary to accommodate the change.
+     *
+     * @param item Item to set priority of.
+     * @param newPriority Priority to set.
+     */
+	public void setPriority(ITodoListItem item, Integer newPriority) throws IllegalArgumentException;
+
+    /**
+     * Checks if the list already contains the specified description.
+     *
+     * @param description Description to check
+     * @return True if the description already exists in the list
+     */
+	public default boolean containsDescription(String description) {
+	    return stream().anyMatch(item -> item.getDescription().equals(description));
+    }
 }
