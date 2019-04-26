@@ -83,6 +83,7 @@ public class ListBoxItem extends HBox {
     		calendarPopUp.initOwner(Program.getStage());
     		
     		calendarPopUp.setScene(scene);
+    		calendarPopUp.setTitle("Select Due Date");
     		calendarPopUp.show();
     		
     		calendar.valueProperty().addListener((observable, oldValue, newValue) -> {
