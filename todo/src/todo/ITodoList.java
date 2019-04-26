@@ -78,6 +78,15 @@ public interface ITodoList extends Serializable {
 	public void setPriority(ITodoListItem item, Integer newPriority) throws IllegalArgumentException;
 
     /**
+     * Sets the priority of the given item to the max priority.
+     * The item must be in the list and have a status of Not Started or In Progress for this to work.
+     *
+     * @param item Item to set priority of
+     * @throws IllegalArgumentException If any of the above constraints are not met
+     */
+	public void setMaxPriorityIfNull(ITodoListItem item) throws IllegalArgumentException;
+
+    /**
      * Checks if the list already contains the specified description.
      *
      * @param description Description to check

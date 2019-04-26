@@ -23,8 +23,7 @@ public class TodoList implements ITodoList {
 	}
 
 	public void addItem(ITodoListItem toInsert) {
-        long maxPriority = stream().filter(o -> o.getStatus() == Status.NotStarted || o.getStatus() == Status.InProgress).count();
-        toInsert.setPriority((int)maxPriority + 1);
+        toInsert.setPriority(getMaxPriority() + 1);
 		list.add(toInsert);
 	}
 
@@ -41,15 +40,18 @@ public class TodoList implements ITodoList {
         }
 	}
 
+	private int getMaxPriority() {
+	    return (int)stream().filter(o -> o.getStatus() == Status.NotStarted || o.getStatus() == Status.InProgress).count();
+    }
+
 	public void setPriority(ITodoListItem item, Integer newPriority) {
         // ensure that item is actually in the list
         if (!list.contains(item)) {
             throw new IllegalArgumentException("Item not in list");
         }
 
-        long maxPriority = stream().filter(o -> o.getStatus() == Status.NotStarted || o.getStatus() == Status.InProgress).count();
-        if (newPriority != null && (newPriority < 1 || newPriority > maxPriority)) {
-            throw new IllegalArgumentException("Invalid priority, must be between 1 and " + maxPriority);
+        if (newPriority != null && (newPriority < 1 || newPriority > getMaxPriority())) {
+            throw new IllegalArgumentException("Invalid priority, must be between 1 and " + getMaxPriority());
         }
         Integer curPriority = item.getPriority();
         if ((curPriority == null && newPriority == null) || (curPriority != null && curPriority.equals(newPriority))) {
@@ -69,5 +71,22 @@ public class TodoList implements ITodoList {
         }
 
         item.setPriority(newPriority);
+    }
+
+    public void setMaxPriorityIfNull(ITodoListItem item) {
+        // ensure that item is actually in the list
+        if (!list.contains(item)) {
+            throw new IllegalArgumentException("Item not in list");
+        }
+
+        if (item.getStatus() != Status.NotStarted && item.getStatus() != Status.InProgress) {
+            throw new IllegalArgumentException("Item has bad status for setting priority");
+        }
+
+        if (item.getPriority() != null) {
+            return;
+        }
+
+        item.setPriority(getMaxPriority());
     }
 }

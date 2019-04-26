@@ -123,15 +123,29 @@ public class ListBoxItem extends HBox {
     	    if (choice.isPresent() && !choice.get().equals(currentStatusStr)) {
     	        if (choice.get().equals("Not Started")) {
     	            item.setStatus(Status.NotStarted);
+    	            Program.getList().setMaxPriorityIfNull(item);
+    	            item.setStartedDate(null);
+    	            item.setFinishedDate(null);
     	            statusBubble.setText(IconManager.NOT_STARTED);
                 } else if (choice.get().equals("In Progress")) {
     	            item.setStatus(Status.InProgress);
+                    Program.getList().setMaxPriorityIfNull(item);
+                    item.setStartedDate(LocalDate.now());
+                    item.setFinishedDate(null);
                     statusBubble.setText(IconManager.IN_PROGRESS);
                 } else if (choice.get().equals("Finished")) {
     	            item.setStatus(Status.Finished);
+    	            Program.getList().setPriority(item, null);
+    	            if (item.getStartedDate() == null) {
+    	                item.setStartedDate(LocalDate.now());
+                    }
+    	            item.setFinishedDate(LocalDate.now());
                     statusBubble.setText(IconManager.FINISHED);
                 } else if (choice.get().equals("Cancelled")) {
     	            item.setStatus(Status.Cancelled);
+                    Program.getList().setPriority(item, null);
+                    item.setStartedDate(null);
+                    item.setFinishedDate(null);
                     statusBubble.setText(IconManager.CANCELLED);
                 }
 
