@@ -95,6 +95,4 @@ public interface ITodoListItem extends Serializable {
 	 * @param value New finished date, or null to clear
 	 */
 	public void setFinishedDate(LocalDate value);
-
-	public ListBoxItem getListBoxItem();
 }

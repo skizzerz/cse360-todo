@@ -15,7 +15,6 @@ public class TodoListItem implements ITodoListItem {
 	private LocalDate dueDate = null;
 	private LocalDate startDate = null;
 	private LocalDate finishDate = null;
-	private ListBoxItem guiItem;
 	
 	//List Links
 	private TodoListItem next = null;
@@ -28,7 +27,6 @@ public class TodoListItem implements ITodoListItem {
 		this.setPriority(priority);
 		this.setDueDate(dueDate);
 		this.setStatus(status);
-		this.createListBoxItem();
 	}
 	//Data Accessors/Mutators
 	public Integer getPriority() {
@@ -49,13 +47,7 @@ public class TodoListItem implements ITodoListItem {
 	public void setDueDate(LocalDate dueDate) {
 		this.dueDate = dueDate;
 	}
-	public void createListBoxItem() {
-		guiItem = new ListBoxItem(priority, description, status, dueDate);
-		guiItem.init(this, Program.getFilter().getSortBy());
-	}
-	public ListBoxItem getListBoxItem() {
-		return guiItem;
-	}
+
 	public LocalDate getStartedDate() {
 		if(status == Status.InProgress || status == Status.Finished) {
 			return startDate;

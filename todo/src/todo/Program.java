@@ -111,6 +111,10 @@ public class Program extends Application {
         return instance.list;
     }
 
+    public static Iterable<ITodoListItem> getFilteredList() {
+        return instance.list.getList(instance.filter);
+    }
+
     /**
      * Sets the list managed by the program
      *

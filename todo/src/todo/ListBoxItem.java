@@ -9,17 +9,8 @@ import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-<<<<<<< HEAD
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
-import javafx.scene.control.DatePicker;
-=======
 import javafx.scene.control.*;
->>>>>>> branch 'master' of https://github.com/skizzerz/cse360-todo.git
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -32,10 +23,6 @@ import javafx.stage.Stage;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
-<<<<<<< HEAD
-=======
-
->>>>>>> branch 'master' of https://github.com/skizzerz/cse360-todo.git
 
 import com.sun.javafx.scene.control.skin.DatePickerSkin;
 
@@ -48,18 +35,8 @@ public class ListBoxItem extends HBox {
     private Label dueDate;
     private Label priority;
     private Label grip;
-    private HBox taskBox;
-    private TodoListItem item;
-    private boolean isDraggable = false;
-    private DatePicker calendar;
-    
-    private int priorityVal = 0;
-	private String descriptionVal = "";
-	private Status status = Status.NotStarted;
-	private LocalDate dueDateVal = null;
-	private LocalDate startDate = null;
-	private LocalDate finishDate = null;
-
+    private ITodoListItem item;
+    private MainScreenController controller;
 
     EventHandler<MouseEvent> onClickDesc = new EventHandler<MouseEvent>() {
     	@Override
@@ -76,6 +53,7 @@ public class ListBoxItem extends HBox {
     	  		     description.setEditable(false);
     	  		     //Store Description
     	  		     item.setDescription(description.getText());
+    	  		     Program.setDirtyFlag(true);
     	  		  }
     		});
     	}
@@ -86,8 +64,8 @@ public class ListBoxItem extends HBox {
     	public void handle(MouseEvent event) {
     		BorderPane root = new BorderPane();
     		Scene scene = new Scene(root, 400, 210);
-    		
-    		calendar = new DatePicker(LocalDate.now());
+
+            DatePicker calendar = new DatePicker(LocalDate.now());
     		DatePickerSkin datePickerSkin = new DatePickerSkin(calendar);
     		Node popupContent = datePickerSkin.getPopupContent();
     		
@@ -104,9 +82,10 @@ public class ListBoxItem extends HBox {
     		
     		calendar.valueProperty().addListener((observable, oldValue, newValue) -> {
     			item.setDueDate(newValue);
-    			setDueDate(newValue);
+    			Program.setDirtyFlag(true);
     			changeDueDateText();
     			calendarPopUp.hide();
+                controller.redrawList();
     		});
     		
     	}
@@ -152,88 +131,46 @@ public class ListBoxItem extends HBox {
                 }
 
     	        Program.setDirtyFlag(true);
+    	        controller.redrawList();
             }
     	}
     };
-    
+
     EventHandler<MouseEvent> onClickPriority = new EventHandler<MouseEvent>() {
     	@Override
     	public void handle(MouseEvent event) {
-    		TextInputDialog inputPrio = new TextInputDialog("");
-    		inputPrio.setTitle("Enter Priority");
-    		inputPrio.setHeaderText("Enter Priority");
-    		inputPrio.setContentText("Priority:");
+    		TextInputDialog inputPrio = new TextInputDialog(item.getPriority().toString());
+    		inputPrio.setTitle("Change Priority");
+    		inputPrio.setHeaderText(null);
+    		inputPrio.setContentText("New Priority:");
     		
     		Optional<String> result = inputPrio.showAndWait();
     		
-    		result.ifPresent(prio -> {
+    		result.ifPresent(priority -> {
     			try {
-    				setPriority(Integer.parseInt(prio));
-    				item.setPriority(Integer.parseInt(prio));
+    			    int newPriority = Integer.parseInt(priority);
+    			    // TODO: validate that newPriority is between 1 and N
+    				item.setPriority(newPriority);
     				setPriorityLabel();
-    				
-    				//It is an int so add it
+    				Program.setDirtyFlag(true);
+    				controller.redrawList();
     			}
-    			catch( Exception e) {
+    			catch (Exception e) {
     				Alert alert = new Alert(AlertType.ERROR, "Value is not an integer!");
-    				alert.showAndWait();
-    				//It is not an int so give error message
+    				alert.show();
     			}
     		});
     	}
     };
-    
-    
-    public HBox getHBox() {
-    	return taskBox;
-    }
-    public Button getStatusBubble() {
-    	return statusBubble;
-    }
-    public TextField getDescription() {
-    	return description;
-    }
-    public Label getDueDate() {
-    	return dueDate;
-    }
-    public Label getGrip() {
-    	return grip;
-    }
-    public Label getPriority() {
-    	return priority;
-    }
-    
-    public void setDescription(String desc) {
-    	descriptionVal = desc;
-    }
-    public void setDueDate(LocalDate dueDate) {
-    	dueDateVal = dueDate;
-    }
-    public void setPriority(int prio) {
-    	priorityVal = prio;
-    }
-    public void setStatus(Status stat) {
-    	status = stat;
-    }
+
     public void setPriorityLabel() {
-    	priority.setText("Priority: " + priorityVal);
+    	priority.setText("Priority " + item.getPriority());
     }
     
-    
-    public ListBoxItem(int prio, String desc, Status stat, LocalDate due) {
-    	//Set data values
-    	this.setDescription(desc);
-    	this.setDueDate(due);
-    	this.setPriority(prio);
-    	this.setStatus(stat);
-    	
-    	
+    public ListBoxItem(MainScreenController controller) {
+        this.controller = controller;
+
         // init child controls
-    	
-    	taskBox = new HBox();
-    	taskBox.setPrefSize(1050, 39);
-    	taskBox.getStyleClass().addAll("bg-white", "border-grey");
-    	
         statusBubble = new Button();
         statusBubble.getStyleClass().addAll("fg-dark", "status-icon", "no-chrome");
         statusBubble.setText(IconManager.NOT_STARTED);
@@ -277,13 +214,6 @@ public class ListBoxItem extends HBox {
 
         // apply base styling
         getStyleClass().addAll("bg-white", "border-grey");
-        
-        //Add elements to HBox
-        //taskBox.getChildren().add(0, grip);
-        //taskBox.getChildren().add(0, statusBubble);
-        //taskBox.getChildren().add(0, description);
-        //taskBox.getChildren().add(0, dueDate);
-
     }
     
     //Updates due date label to what is stored in duedateval
@@ -292,10 +222,10 @@ public class ListBoxItem extends HBox {
         DateTimeFormatter dateFormatWithYear = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         
     	
-    	if (dueDateVal.getYear() == LocalDate.now().getYear()) {
-            dueDate.setText("Due " + dueDateVal.format(dateFormatNoYear));
+    	if (item.getDueDate().getYear() == LocalDate.now().getYear()) {
+            dueDate.setText("Due " + item.getDueDate().format(dateFormatNoYear));
         } else {
-            dueDate.setText("Due " + dueDateVal.format(dateFormatWithYear));
+            dueDate.setText("Due " + item.getDueDate().format(dateFormatWithYear));
         }
     }
 
@@ -305,10 +235,10 @@ public class ListBoxItem extends HBox {
      * @param listItem Item to populate control with
      * @param activeSort How the list is currently being sorted
      */
-    public void init(TodoListItem item, SortBy activeSort) {
-        this.item = item;
+    public void init(ITodoListItem listItem, SortBy activeSort) {
+        item = listItem;
         
-        switch (status) {
+        switch (item.getStatus()) {
             case NotStarted:
                 statusBubble.setText(IconManager.NOT_STARTED);
                 break;
@@ -323,37 +253,20 @@ public class ListBoxItem extends HBox {
                 break;
         }
 
-        description.setText(descriptionVal);
-        
-        changeDueDateText();
-        
-        
-        // if sorting by due date, priority field takes former position of due date field.
-        // Otherwise, it's either not shown, or shown as just a number
-        if (activeSort == SortBy.DueDate) {
-            priority.setText("Priority: " + priorityVal);
+        description.setText(item.getDescription());
+        getChildren().addAll(statusBubble, description);
+
+        // Finished and Cancelled tasks don't have priorities
+        if (item.getPriority() != null) {
+            setPriorityLabel();
             priority.setPrefWidth(150);
             priority.setPadding(new Insets(5));
-        } else {
-            priority.setText("Priority: " + priorityVal);
-            priority.setPrefWidth(150);
-            priority.setPadding(new Insets(5));
+
+            getChildren().add(priority);
         }
 
-        switch (activeSort) {
-            case Priority:
-                isDraggable = true;
-                //getChildren().addAll(grip, statusBubble, description, dueDate);
-                break;
-            case DueDate:
-                isDraggable = false;
-                //getChildren().addAll(statusBubble, description, priority);
-                break;
-            case Description:
-                isDraggable = false;
-                //getChildren().addAll(priority, statusBubble, description, dueDate);
-                break;
-        }
+        changeDueDateText();
+        getChildren().add(dueDate);
     }
     
 }

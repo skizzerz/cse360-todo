@@ -83,8 +83,6 @@ public class MainScreenController implements Initializable {
     @FXML
     private Button newTaskButton;
 
-    private ITodoListFilter filter = new TodoListFilter();
-    
     @FXML
     void menuNew(ActionEvent event) {
     	if(!Program.getDirtyFlag() || showUnsavedChangesPrompt()) {
@@ -128,85 +126,110 @@ public class MainScreenController implements Initializable {
 
     @FXML
     void menuSortPriorityAscending(ActionEvent event) {
-    	filter.setSortBy(SortBy.Priority);
-    	filter.setSortDirection(SortDirection.Ascending);
+        Program.getFilter().setSortBy(SortBy.Priority);
+        Program.getFilter().setSortDirection(SortDirection.Ascending);
     	setSortMenuItem(SortBy.Priority, SortDirection.Ascending);
     	redrawList();
     }
 
     @FXML
     void menuSortPriorityDescending(ActionEvent event) {
-    	filter.setSortBy(SortBy.Priority);
-    	filter.setSortDirection(SortDirection.Descending);
+        Program.getFilter().setSortBy(SortBy.Priority);
+        Program.getFilter().setSortDirection(SortDirection.Descending);
     	setSortMenuItem(SortBy.Priority, SortDirection.Descending);
     	redrawList();
     }
 
     @FXML
     void menuSortStatusAscending(ActionEvent event) {
-    	filter.setSortBy(SortBy.Status);
-    	filter.setSortDirection(SortDirection.Ascending);
+        Program.getFilter().setSortBy(SortBy.Status);
+        Program.getFilter().setSortDirection(SortDirection.Ascending);
     	setSortMenuItem(SortBy.Status, SortDirection.Ascending);
     	redrawList();
     }
 
     @FXML
     void menuSortStatusDescending(ActionEvent event) {
-    	filter.setSortBy(SortBy.Status);
-    	filter.setSortDirection(SortDirection.Descending);
+        Program.getFilter().setSortBy(SortBy.Status);
+        Program.getFilter().setSortDirection(SortDirection.Descending);
     	setSortMenuItem(SortBy.Status, SortDirection.Descending);
     	redrawList();
     }
 
     @FXML
     void menuSortDescriptionAscending(ActionEvent event) {
-    	filter.setSortBy(SortBy.Description);
-    	filter.setSortDirection(SortDirection.Ascending);
+        Program.getFilter().setSortBy(SortBy.Description);
+        Program.getFilter().setSortDirection(SortDirection.Ascending);
     	setSortMenuItem(SortBy.Description, SortDirection.Ascending);
     	redrawList();
     }
 
     @FXML
     void menuSortDescriptionDescending(ActionEvent event) {
-    	filter.setSortBy(SortBy.Description);
-    	filter.setSortDirection(SortDirection.Descending);
+        Program.getFilter().setSortBy(SortBy.Description);
+        Program.getFilter().setSortDirection(SortDirection.Descending);
     	setSortMenuItem(SortBy.Description, SortDirection.Descending);
     	redrawList();
     }
 
     @FXML
     void menuSortDueDateAscending(ActionEvent event) {
-    	filter.setSortBy(SortBy.DueDate);
-    	filter.setSortDirection(SortDirection.Ascending);
+    	Program.getFilter().setSortBy(SortBy.DueDate);
+        Program.getFilter().setSortDirection(SortDirection.Ascending);
     	setSortMenuItem(SortBy.DueDate, SortDirection.Ascending);
     	redrawList();
     }
 
     @FXML
     void menuSortDueDateDescending(ActionEvent event) {
-    	filter.setSortBy(SortBy.DueDate);
-    	filter.setSortDirection(SortDirection.Descending);
+        Program.getFilter().setSortBy(SortBy.DueDate);
+        Program.getFilter().setSortDirection(SortDirection.Descending);
     	setSortMenuItem(SortBy.DueDate, SortDirection.Descending);
     	redrawList();
     }
 
     @FXML
     void menuShowNotStarted(ActionEvent event) {
+        // if checked, unselect it. Otherwise select it
+        if (Program.getFilter().getStatusFilter().contains(Status.NotStarted)) {
+            Program.getFilter().getStatusFilter().remove(Status.NotStarted);
+        } else {
+            Program.getFilter().getStatusFilter().add(Status.NotStarted);
+        }
+
     	redrawList();
     }
 
     @FXML
     void menuShowInProgress(ActionEvent event) {
+        if (Program.getFilter().getStatusFilter().contains(Status.InProgress)) {
+            Program.getFilter().getStatusFilter().remove(Status.InProgress);
+        } else {
+            Program.getFilter().getStatusFilter().add(Status.InProgress);
+        }
+
     	redrawList();
     }
 
     @FXML
     void menuShowFinished(ActionEvent event) {
+        if (Program.getFilter().getStatusFilter().contains(Status.Finished)) {
+            Program.getFilter().getStatusFilter().remove(Status.Finished);
+        } else {
+            Program.getFilter().getStatusFilter().add(Status.Finished);
+        }
+
     	redrawList();
     }
 
     @FXML
     void menuShowCancelled(ActionEvent event) {
+        if (Program.getFilter().getStatusFilter().contains(Status.Cancelled)) {
+            Program.getFilter().getStatusFilter().remove(Status.Cancelled);
+        } else {
+            Program.getFilter().getStatusFilter().add(Status.Cancelled);
+        }
+
     	redrawList();
     }
 
@@ -252,22 +275,7 @@ public class MainScreenController implements Initializable {
     	
     	redrawList();
     }
-    
-    //Draw an item from the list
-    void addItemToVBox(ListBoxItem item) {
-    	item.getHBox().getChildren().clear();
-    	
-    	item.getHBox().getChildren().add(0, item.getDueDate());
-    	item.getHBox().getChildren().add(0, item.getPriority());
-    	item.getHBox().getChildren().add(0, item.getDescription());
-    	item.getHBox().getChildren().add(0, item.getStatusBubble());
-    	item.getHBox().getChildren().add(0, item.getGrip());
-    	
-    	VBox.setVgrow(item.getHBox(), Priority.SOMETIMES);
-    	
-    	listBox.getChildren().add(item.getHBox());
-    }
-    
+
     //Removes node with given 'tag' (tag created by using .setUserData("your tag here") )
     //Tag of placeHolder node is "PlaceHolder"
     void removeNodeInVBox(String nodeData) {
@@ -335,43 +343,15 @@ public class MainScreenController implements Initializable {
     public void redrawList() {
     	//Clear List
     	listBox.getChildren().clear();
-    	
-    	
+
     	//Repopulate based on filters
-    	for(ITodoListItem n : Program.getList().getList(filter)) {
-    		
-    		//Show not started
-    		if(showNotStartedItem.isSelected()) {
-    			if(n.getStatus() == Status.NotStarted) {
-    				addItemToVBox(n.getListBoxItem());
-    			}
-    		}
-    		
-    		//
-    		if(showInProgressItem.isSelected()) {
-    			if(n.getStatus() == Status.InProgress) {
-    				addItemToVBox(n.getListBoxItem());
-    			}
-    		}
-    		
-    		if(showFinishedItem.isSelected()) {
-    			if(n.getStatus() == Status.Finished) {
-    				addItemToVBox(n.getListBoxItem());
-    			}
-    		}
-    		
-    		if(showCancelledItem.isSelected()) {
-    			if(n.getStatus() != Status.Cancelled) {
-    				addItemToVBox(n.getListBoxItem());
-    			}
-    		}
+    	for (ITodoListItem item : Program.getFilteredList()) {
+    		ListBoxItem hbox = new ListBoxItem(this);
+    		hbox.init(item, Program.getFilter().getSortBy());
+            listBox.getChildren().add(hbox);
     	}
-    	
-    	VBox.setVgrow(newTaskButton, Priority.SOMETIMES);
+
     	listBox.getChildren().add(newTaskButton);
-    	
-    	
-    	
     }
 
     /**
