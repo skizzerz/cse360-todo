@@ -36,7 +36,7 @@ import java.util.ResourceBundle;
  * Listeners and events for the main screen (list view)
  */
 public class MainScreenController implements Initializable {
-	
+
     @FXML // fx:id="sortDueDateAscendingItem"
     private CheckMenuItem sortDueDateAscendingItem; // Value injected by FXMLLoader
 
@@ -81,42 +81,42 @@ public class MainScreenController implements Initializable {
 
     @FXML // fx:id="scrollPane"
     private ScrollPane scrollPane; // Value injected by FXMLLoader
-    
+
     @FXML
     private Button newTaskButton;
 
     @FXML
     void menuNew(ActionEvent event) {
-    	if(!Program.getDirtyFlag() || showUnsavedChangesPrompt()) {
-    		createNewList();
-    	}
+        if(!Program.getDirtyFlag() || showUnsavedChangesPrompt()) {
+            createNewList();
+        }
     }
 
     @FXML
     void menuOpen(ActionEvent event) {
-    	if(!Program.getDirtyFlag() || showUnsavedChangesPrompt()) {
-    		showOpenDialog();
-    	}
+        if(!Program.getDirtyFlag() || showUnsavedChangesPrompt()) {
+            showOpenDialog();
+        }
     }
 
     @FXML
     void menuClose(ActionEvent event) throws Exception{
-		Program.changeScene("SplashScreen.fxml");
+        Program.changeScene("SplashScreen.fxml");
     }
 
     @FXML
     void menuSave(ActionEvent event) {
-    	saveToFilename();
+        saveToFilename();
     }
 
     @FXML
     void menuSaveAs(ActionEvent event) {
-    	showSaveAsDialog();
+        showSaveAsDialog();
     }
 
     @FXML
     void menuPrint(ActionEvent event){
-    	PrintReport.saveReport(Program.getList());
+        PrintReport.saveReport(Program.getList());
     }
 
     @FXML
@@ -130,64 +130,64 @@ public class MainScreenController implements Initializable {
     void menuSortPriorityAscending(ActionEvent event) {
         Program.getFilter().setSortBy(SortBy.Priority);
         Program.getFilter().setSortDirection(SortDirection.Ascending);
-    	setSortMenuItem(SortBy.Priority, SortDirection.Ascending);
-    	redrawList();
+        setSortMenuItem(SortBy.Priority, SortDirection.Ascending);
+        redrawList();
     }
 
     @FXML
     void menuSortPriorityDescending(ActionEvent event) {
         Program.getFilter().setSortBy(SortBy.Priority);
         Program.getFilter().setSortDirection(SortDirection.Descending);
-    	setSortMenuItem(SortBy.Priority, SortDirection.Descending);
-    	redrawList();
+        setSortMenuItem(SortBy.Priority, SortDirection.Descending);
+        redrawList();
     }
 
     @FXML
     void menuSortStatusAscending(ActionEvent event) {
         Program.getFilter().setSortBy(SortBy.Status);
         Program.getFilter().setSortDirection(SortDirection.Ascending);
-    	setSortMenuItem(SortBy.Status, SortDirection.Ascending);
-    	redrawList();
+        setSortMenuItem(SortBy.Status, SortDirection.Ascending);
+        redrawList();
     }
 
     @FXML
     void menuSortStatusDescending(ActionEvent event) {
         Program.getFilter().setSortBy(SortBy.Status);
         Program.getFilter().setSortDirection(SortDirection.Descending);
-    	setSortMenuItem(SortBy.Status, SortDirection.Descending);
-    	redrawList();
+        setSortMenuItem(SortBy.Status, SortDirection.Descending);
+        redrawList();
     }
 
     @FXML
     void menuSortDescriptionAscending(ActionEvent event) {
         Program.getFilter().setSortBy(SortBy.Description);
         Program.getFilter().setSortDirection(SortDirection.Ascending);
-    	setSortMenuItem(SortBy.Description, SortDirection.Ascending);
-    	redrawList();
+        setSortMenuItem(SortBy.Description, SortDirection.Ascending);
+        redrawList();
     }
 
     @FXML
     void menuSortDescriptionDescending(ActionEvent event) {
         Program.getFilter().setSortBy(SortBy.Description);
         Program.getFilter().setSortDirection(SortDirection.Descending);
-    	setSortMenuItem(SortBy.Description, SortDirection.Descending);
-    	redrawList();
+        setSortMenuItem(SortBy.Description, SortDirection.Descending);
+        redrawList();
     }
 
     @FXML
     void menuSortDueDateAscending(ActionEvent event) {
-    	Program.getFilter().setSortBy(SortBy.DueDate);
+        Program.getFilter().setSortBy(SortBy.DueDate);
         Program.getFilter().setSortDirection(SortDirection.Ascending);
-    	setSortMenuItem(SortBy.DueDate, SortDirection.Ascending);
-    	redrawList();
+        setSortMenuItem(SortBy.DueDate, SortDirection.Ascending);
+        redrawList();
     }
 
     @FXML
     void menuSortDueDateDescending(ActionEvent event) {
         Program.getFilter().setSortBy(SortBy.DueDate);
         Program.getFilter().setSortDirection(SortDirection.Descending);
-    	setSortMenuItem(SortBy.DueDate, SortDirection.Descending);
-    	redrawList();
+        setSortMenuItem(SortBy.DueDate, SortDirection.Descending);
+        redrawList();
     }
 
     @FXML
@@ -199,7 +199,7 @@ public class MainScreenController implements Initializable {
             Program.getFilter().getStatusFilter().add(Status.NotStarted);
         }
 
-    	redrawList();
+        redrawList();
     }
 
     @FXML
@@ -210,7 +210,7 @@ public class MainScreenController implements Initializable {
             Program.getFilter().getStatusFilter().add(Status.InProgress);
         }
 
-    	redrawList();
+        redrawList();
     }
 
     @FXML
@@ -221,7 +221,7 @@ public class MainScreenController implements Initializable {
             Program.getFilter().getStatusFilter().add(Status.Finished);
         }
 
-    	redrawList();
+        redrawList();
     }
 
     @FXML
@@ -232,17 +232,17 @@ public class MainScreenController implements Initializable {
             Program.getFilter().getStatusFilter().add(Status.Cancelled);
         }
 
-    	redrawList();
+        redrawList();
     }
 
     @FXML
     void menuUserGuide(ActionEvent event) throws Exception {
-		java.awt.Desktop.getDesktop().browse(new URI(Program.USER_GUIDE_LOCATION));
+        java.awt.Desktop.getDesktop().browse(new URI(Program.USER_GUIDE_LOCATION));
     }
 
     @FXML
     void menuAbout(ActionEvent event) throws Exception {
-    	Stage about = Program.getModal("AboutScreen.fxml");
+        Stage about = Program.getModal("AboutScreen.fxml");
         about.setResizable(false);
         about.setTitle("About To-Do List");
         about.show();
@@ -250,64 +250,77 @@ public class MainScreenController implements Initializable {
 
     @FXML
     void listTitleClick(MouseEvent event) {
-    	listTitle.setEditable(true);
+        listTitle.setEditable(true);
     }
-    
+
     @FXML
     void listTitleEnter(KeyEvent event) {
-    	listTitle.setOnKeyReleased(enterPressed -> {
-  		  if (enterPressed.getCode() == KeyCode.ENTER){
-  		     listTitle.setEditable(false);
-  		     //Store list title
-  		     Program.getList().setName(listTitle.getText());
-  		     //Set the dirty bit for this change
-  		     Program.setDirtyFlag(true);
-  		  }
-  	});
+        listTitle.setOnKeyReleased(enterPressed -> {
+          if (enterPressed.getCode() == KeyCode.ENTER){
+             listTitle.setEditable(false);
+             //Store list title
+             Program.getList().setName(listTitle.getText());
+             //Set the dirty bit for this change
+             Program.setDirtyFlag(true);
+          }
+    });
     }
 
     //Add new item
     @FXML
     void newTaskAction(ActionEvent event) {
-    	removeNodeInVBox("PlaceHolder");
-    	
-    	TodoListItem newItem = new TodoListItem();
-    	
-    	TextInputDialog inputDesc = new TextInputDialog("");
-    	inputDesc.setTitle("New Task");
-    	inputDesc.setHeaderText(null);
-    	inputDesc.setContentText("Enter Description:");
-    	Optional<String> result = inputDesc.showAndWait();
-    	result.ifPresent(description -> {
-    		newItem.setDescription(description);
-    	});
-    	
-    	if(Program.getList().containsDescription(newItem.getDescription())) {
-    		Alert alert = new Alert(AlertType.ERROR,"Description cannot be the same as that of another item.", ButtonType.OK);
-            alert.showAndWait();
-    	} else {
-    		Program.getList().addItem(newItem);
-    	}
-    	
-    	redrawList();
+        TodoListItem newItem = new TodoListItem();
+
+        TextInputDialog inputDesc = new TextInputDialog("");
+        inputDesc.setTitle("New Task");
+        inputDesc.setHeaderText(null);
+        inputDesc.setContentText("Enter Description:");
+
+        Optional<String> result = inputDesc.showAndWait();
+        if (!result.isPresent()) {
+            return; // user cancelled
+        }
+
+        String description = result.get();
+        if (Program.getList().containsDescription(description)) {
+            Alert error = new Alert(AlertType.ERROR);
+            error.setTitle("Error");
+            error.setHeaderText(null);
+            error.setContentText("This task already exists in the list!");
+            error.show();
+            return;
+        } else if (description.equals("")) {
+            Alert error = new Alert(AlertType.ERROR);
+            error.setTitle("Error");
+            error.setHeaderText(null);
+            error.setContentText("Description cannot be empty!");
+            error.show();
+            return;
+        }
+
+        newItem.setDescription(result.get());
+        removeNodeInVBox("PlaceHolder");
+        Program.getList().addItem(newItem);
+
+        redrawList();
     }
 
     //Removes node with given 'tag' (tag created by using .setUserData("your tag here") )
     //Tag of placeHolder node is "PlaceHolder"
     void removeNodeInVBox(String nodeData) {
-    	boolean found = false;
-    	Node del = null;
-    	
-    	for (Node n : listBox.getChildren()) {
-    		if (nodeData.equals(n.getUserData())) {
-    			del = n;
-    			found = true;
-    		}
-    	}
-    	
-    	if(found == true) {
-    		listBox.getChildren().remove(del);
-    	}
+        boolean found = false;
+        Node del = null;
+
+        for (Node n : listBox.getChildren()) {
+            if (nodeData.equals(n.getUserData())) {
+                del = n;
+                found = true;
+            }
+        }
+
+        if(found == true) {
+            listBox.getChildren().remove(del);
+        }
     }
 
     /**
@@ -357,17 +370,17 @@ public class MainScreenController implements Initializable {
      * complete a drag-and-drop operation so that we can show the updated list in the UI.
      */
     public void redrawList() {
-    	//Clear List
-    	listBox.getChildren().clear();
+        //Clear List
+        listBox.getChildren().clear();
 
-    	//Repopulate based on filters
-    	for (ITodoListItem item : Program.getFilteredList()) {
-    		ListBoxItem hbox = new ListBoxItem(this);
-    		hbox.init(item, Program.getFilter().getSortBy());
+        //Repopulate based on filters
+        for (ITodoListItem item : Program.getFilteredList()) {
+            ListBoxItem hbox = new ListBoxItem(this);
+            hbox.init(item, Program.getFilter().getSortBy());
             listBox.getChildren().add(hbox);
-    	}
+        }
 
-    	listBox.getChildren().add(newTaskButton);
+        listBox.getChildren().add(newTaskButton);
     }
 
     /**
@@ -451,7 +464,7 @@ public class MainScreenController implements Initializable {
         if (result.isPresent()) {
             if (result.get() == saveButton) {
                 // Save the list
-            	saveToFilename();
+                saveToFilename();
             } else if (result.get() == exitButton) {
                 // Exit without saving
                 return true;
@@ -489,7 +502,7 @@ public class MainScreenController implements Initializable {
      * Displays a dialog that allows the user to save a file at a location of their choosing
      */
     private boolean showSaveAsDialog() {
-    	FileChooser chooser = new FileChooser();
+        FileChooser chooser = new FileChooser();
         chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("To-Do Lists", "*.tdl"));
 
         File file = chooser.showSaveDialog(Program.getStage());
@@ -504,25 +517,25 @@ public class MainScreenController implements Initializable {
                 alert.showAndWait();
             }
         }
-    	return false;
+        return false;
     }
     /**
      * Saves the list to the specified file, if such a filename exists.  If it does not, opens the "Save As" prompt.
      * Returns true on a successful save to any path, false otherwise.
      */
     private boolean saveToFilename() {
-    	if(Program.getFilename() == null) {
-    		return showSaveAsDialog();
-    	} else {
-	    	try {
-	    		File savior = new File(Program.getFilename());
-				FileManager.saveToFile(savior,Program.getList());
-				Program.setDirtyFlag(false);
-				return true;
-			} catch (Exception e) {
-				return false;
-			}
-    	}
+        if(Program.getFilename() == null) {
+            return showSaveAsDialog();
+        } else {
+            try {
+                File savior = new File(Program.getFilename());
+                FileManager.saveToFile(savior,Program.getList());
+                Program.setDirtyFlag(false);
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        }
     }
     /**
      * Sends the user to the main screen with a new, blank list
