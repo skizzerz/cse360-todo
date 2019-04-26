@@ -157,7 +157,7 @@ public class ListBoxItem extends HBox {
     	taskBox.getStyleClass().addAll("bg-white", "border-grey");
     	
         statusBubble = new Button();
-        statusBubble.getStyleClass().addAll("fg-dark", "status-icon", "no-chrome", "round");
+        statusBubble.getStyleClass().addAll("fg-dark", "status-icon", "no-chrome");
         statusBubble.setText(IconManager.NOT_STARTED);
         statusBubble.setCursor(Cursor.HAND);
         statusBubble.setPrefWidth(50);
