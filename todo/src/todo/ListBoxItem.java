@@ -50,10 +50,15 @@ public class ListBoxItem extends HBox {
     	public void handle(KeyEvent event) {
     		description.setOnKeyReleased(enterPressed -> {
     	  		  if (enterPressed.getCode() == KeyCode.ENTER){
-    	  		     description.setEditable(false);
-    	  		     //Store Description
-    	  		     item.setDescription(description.getText());
-    	  		     Program.setDirtyFlag(true);
+    	  			  if(Program.getList().containsDescription(description.getText())) {
+    	  				Alert alert = new Alert(AlertType.ERROR,"Description cannot be the same as that of another item.", ButtonType.OK);
+    	                alert.showAndWait();
+    	  			  } else {
+	    	  		     description.setEditable(false);
+	    	  		     //Store Description
+	    	  		     item.setDescription(description.getText());
+	    	  		     Program.setDirtyFlag(true);
+    	  			  }
     	  		  }
     		});
     	}
