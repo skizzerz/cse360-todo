@@ -237,7 +237,7 @@ public class MainScreenController implements Initializable {
 
     @FXML
     void menuUserGuide(ActionEvent event) throws Exception {
-		java.awt.Desktop.getDesktop().browse(new URI("https://drive.google.com/file/d/1wi3M6ad1Fy0sIpJA9fJFJLoAceUZ-tly/view?usp=sharing"));
+		java.awt.Desktop.getDesktop().browse(new URI(Program.USER_GUIDE_LOCATION));
     }
 
     @FXML
@@ -277,7 +277,6 @@ public class MainScreenController implements Initializable {
     	inputDesc.setTitle("New Task");
     	inputDesc.setHeaderText(null);
     	inputDesc.setContentText("Enter Description:");
-    	
     	Optional<String> result = inputDesc.showAndWait();
     	result.ifPresent(description -> {
     		newItem.setDescription(description);

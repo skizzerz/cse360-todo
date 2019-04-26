@@ -98,7 +98,7 @@ public class SplashScreenController implements Initializable {
     @FXML
     void menuUserGuide(ActionEvent event) {
     	try {
-			java.awt.Desktop.getDesktop().browse(new URI("https://drive.google.com/file/d/1wi3M6ad1Fy0sIpJA9fJFJLoAceUZ-tly/view?usp=sharing"));
+			java.awt.Desktop.getDesktop().browse(new URI(Program.USER_GUIDE_LOCATION));
 		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
             alert.showAndWait();
