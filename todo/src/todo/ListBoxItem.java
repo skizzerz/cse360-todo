@@ -3,15 +3,13 @@
 // Wrapper around HBox to make it easier to work with items in our list
 package todo;
 
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.DatePicker;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -23,6 +21,7 @@ import javafx.stage.Stage;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 
 import com.sun.javafx.scene.control.skin.DatePickerSkin;
@@ -100,11 +99,47 @@ public class ListBoxItem extends HBox {
     	}
     };
     
-    EventHandler<MouseEvent> onClickStatusBubble = new EventHandler<MouseEvent>() {
+    EventHandler<ActionEvent> onClickStatusBubble = new EventHandler<ActionEvent>() {
     	@Override
-    	public void handle(MouseEvent event) {
-    		
-    		
+    	public void handle(ActionEvent event) {
+    	    Status currentStatus = item.getStatus();
+    	    String currentStatusStr = null;
+    	    switch (currentStatus) {
+                case NotStarted:
+                    currentStatusStr = "Not Started";
+                    break;
+                case InProgress:
+                    currentStatusStr = "In Progress";
+                    break;
+                case Finished:
+                    currentStatusStr = "Finished";
+                    break;
+                case Cancelled:
+                    currentStatusStr = "Cancelled";
+            }
+
+            ChoiceDialog<String> dialog = new ChoiceDialog<>(currentStatusStr, "Not Started", "In Progress", "Finished", "Cancelled");
+    	    dialog.setTitle("Change Status");
+    	    dialog.setHeaderText(null);
+    	    dialog.setContentText("New Status:");
+    	    Optional<String> choice = dialog.showAndWait();
+    	    if (choice.isPresent() && !choice.get().equals(currentStatusStr)) {
+    	        if (choice.get().equals("Not Started")) {
+    	            item.setStatus(Status.NotStarted);
+    	            statusBubble.setText(IconManager.NOT_STARTED);
+                } else if (choice.get().equals("In Progress")) {
+    	            item.setStatus(Status.InProgress);
+                    statusBubble.setText(IconManager.IN_PROGRESS);
+                } else if (choice.get().equals("Finished")) {
+    	            item.setStatus(Status.Finished);
+                    statusBubble.setText(IconManager.FINISHED);
+                } else if (choice.get().equals("Cancelled")) {
+    	            item.setStatus(Status.Cancelled);
+                    statusBubble.setText(IconManager.CANCELLED);
+                }
+
+    	        Program.setDirtyFlag(true);
+            }
     	}
     };
     
@@ -161,6 +196,8 @@ public class ListBoxItem extends HBox {
         statusBubble.setText(IconManager.NOT_STARTED);
         statusBubble.setCursor(Cursor.HAND);
         statusBubble.setPrefWidth(50);
+        statusBubble.setTextOverrun(OverrunStyle.CLIP);
+        statusBubble.addEventFilter(ActionEvent.ACTION, onClickStatusBubble);
         HBox.setHgrow(statusBubble, Priority.NEVER);
 
         description = new TextField();
