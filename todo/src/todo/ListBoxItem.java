@@ -71,25 +71,26 @@ public class ListBoxItem extends HBox {
             Scene scene = new Scene(root, 400, 210);
 
             DatePicker calendar = new DatePicker(LocalDate.now());
-            DatePickerSkin datePickerSkin = new DatePickerSkin(calendar);
-            Node popupContent = datePickerSkin.getPopupContent();
-
-
-
-            root.setCenter(popupContent);
-
-            Stage calendarPopUp = new Stage();
-            calendarPopUp.initModality(Modality.APPLICATION_MODAL);
-            calendarPopUp.initOwner(Program.getStage());
-
-            calendarPopUp.setScene(scene);
-            calendarPopUp.show();
-
-            calendar.valueProperty().addListener((observable, oldValue, newValue) -> {
-                item.setDueDate(newValue);
-                Program.setDirtyFlag(true);
-                changeDueDateText();
-                calendarPopUp.hide();
+    		DatePickerSkin datePickerSkin = new DatePickerSkin(calendar);
+    		Node popupContent = datePickerSkin.getPopupContent();
+    		
+    		
+    	
+    		root.setCenter(popupContent);
+    		
+    		Stage calendarPopUp = new Stage();
+    		calendarPopUp.initModality(Modality.APPLICATION_MODAL);
+    		calendarPopUp.initOwner(Program.getStage());
+    		
+    		calendarPopUp.setScene(scene);
+    		calendarPopUp.setTitle("Select Due Date");
+    		calendarPopUp.show();
+    		
+    		calendar.valueProperty().addListener((observable, oldValue, newValue) -> {
+    			item.setDueDate(newValue);
+    			Program.setDirtyFlag(true);
+    			changeDueDateText();
+    			calendarPopUp.hide();
                 controller.redrawList();
             });
 
