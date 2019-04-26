@@ -147,6 +147,7 @@ public class SplashScreenController implements Initializable {
         if (file != null) {
             try {
                 Program.setList(FileManager.loadFromFile(file));
+                Program.setFilename(file.getAbsolutePath());
                 Program.setDirtyFlag(false);
                 Program.setFilter(new TodoListFilter());
                 Program.changeScene("MainScreen.fxml");
