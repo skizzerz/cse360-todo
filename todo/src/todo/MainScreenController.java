@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.print.PrinterJob;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
@@ -16,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import jdk.nashorn.internal.runtime.linker.JavaAdapterFactory;
@@ -113,8 +115,8 @@ public class MainScreenController implements Initializable {
     }
 
     @FXML
-    void menuPrint(ActionEvent event) {
-
+    void menuPrint(ActionEvent event){
+    	PrintReport.saveReport(Program.getList());
     }
 
     @FXML
