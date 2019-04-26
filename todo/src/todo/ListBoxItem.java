@@ -39,36 +39,36 @@ public class ListBoxItem extends HBox {
     private MainScreenController controller;
 
     EventHandler<MouseEvent> onClickDesc = new EventHandler<MouseEvent>() {
-    	@Override
-    	public void handle(MouseEvent event) {
-    		description.setEditable(true);
-    	}
+        @Override
+        public void handle(MouseEvent event) {
+            description.setEditable(true);
+        }
     };
-    
+
     EventHandler<KeyEvent> exitDesc = new EventHandler<KeyEvent>() {
-    	@Override
-    	public void handle(KeyEvent event) {
-    		description.setOnKeyReleased(enterPressed -> {
-    	  		  if (enterPressed.getCode() == KeyCode.ENTER){
-    	  			  if(Program.getList().containsDescription(description.getText())) {
-    	  				Alert alert = new Alert(AlertType.ERROR,"Description cannot be the same as that of another item.", ButtonType.OK);
-    	                alert.showAndWait();
-    	  			  } else {
-	    	  		     description.setEditable(false);
-	    	  		     //Store Description
-	    	  		     item.setDescription(description.getText());
-	    	  		     Program.setDirtyFlag(true);
-    	  			  }
-    	  		  }
-    		});
-    	}
+        @Override
+        public void handle(KeyEvent event) {
+            description.setOnKeyReleased(enterPressed -> {
+                  if (enterPressed.getCode() == KeyCode.ENTER){
+                      if(Program.getList().containsDescription(description.getText())) {
+                        Alert alert = new Alert(AlertType.ERROR,"Description cannot be the same as that of another item.", ButtonType.OK);
+                        alert.showAndWait();
+                      } else {
+                         description.setEditable(false);
+                         //Store Description
+                         item.setDescription(description.getText());
+                         Program.setDirtyFlag(true);
+                      }
+                  }
+            });
+        }
     };
-    
+
     EventHandler<MouseEvent> onClickDueDate = new EventHandler<MouseEvent>() {
-    	@Override
-    	public void handle(MouseEvent event) {
-    		BorderPane root = new BorderPane();
-    		Scene scene = new Scene(root, 400, 210);
+        @Override
+        public void handle(MouseEvent event) {
+            BorderPane root = new BorderPane();
+            Scene scene = new Scene(root, 400, 210);
 
             DatePicker calendar = new DatePicker(LocalDate.now());
     		DatePickerSkin datePickerSkin = new DatePickerSkin(calendar);
@@ -92,17 +92,17 @@ public class ListBoxItem extends HBox {
     			changeDueDateText();
     			calendarPopUp.hide();
                 controller.redrawList();
-    		});
-    		
-    	}
+            });
+
+        }
     };
-    
+
     EventHandler<ActionEvent> onClickStatusBubble = new EventHandler<ActionEvent>() {
-    	@Override
-    	public void handle(ActionEvent event) {
-    	    Status currentStatus = item.getStatus();
-    	    String currentStatusStr = null;
-    	    switch (currentStatus) {
+        @Override
+        public void handle(ActionEvent event) {
+            Status currentStatus = item.getStatus();
+            String currentStatusStr = null;
+            switch (currentStatus) {
                 case NotStarted:
                     currentStatusStr = "Not Started";
                     break;
@@ -117,63 +117,77 @@ public class ListBoxItem extends HBox {
             }
 
             ChoiceDialog<String> dialog = new ChoiceDialog<>(currentStatusStr, "Not Started", "In Progress", "Finished", "Cancelled");
-    	    dialog.setTitle("Change Status");
-    	    dialog.setHeaderText(null);
-    	    dialog.setContentText("New Status:");
-    	    Optional<String> choice = dialog.showAndWait();
-    	    if (choice.isPresent() && !choice.get().equals(currentStatusStr)) {
-    	        if (choice.get().equals("Not Started")) {
-    	            item.setStatus(Status.NotStarted);
-    	            statusBubble.setText(IconManager.NOT_STARTED);
+            dialog.setTitle("Change Status");
+            dialog.setHeaderText(null);
+            dialog.setContentText("New Status:");
+            Optional<String> choice = dialog.showAndWait();
+            if (choice.isPresent() && !choice.get().equals(currentStatusStr)) {
+                if (choice.get().equals("Not Started")) {
+                    item.setStatus(Status.NotStarted);
+                    Program.getList().setMaxPriorityIfNull(item);
+                    item.setStartedDate(null);
+                    item.setFinishedDate(null);
+                    statusBubble.setText(IconManager.NOT_STARTED);
                 } else if (choice.get().equals("In Progress")) {
-    	            item.setStatus(Status.InProgress);
+                    item.setStatus(Status.InProgress);
+                    Program.getList().setMaxPriorityIfNull(item);
+                    item.setStartedDate(LocalDate.now());
+                    item.setFinishedDate(null);
                     statusBubble.setText(IconManager.IN_PROGRESS);
                 } else if (choice.get().equals("Finished")) {
-    	            item.setStatus(Status.Finished);
+                    item.setStatus(Status.Finished);
+                    Program.getList().setPriority(item, null);
+                    if (item.getStartedDate() == null) {
+                        item.setStartedDate(LocalDate.now());
+                    }
+                    item.setFinishedDate(LocalDate.now());
                     statusBubble.setText(IconManager.FINISHED);
                 } else if (choice.get().equals("Cancelled")) {
-    	            item.setStatus(Status.Cancelled);
+                    item.setStatus(Status.Cancelled);
+                    Program.getList().setPriority(item, null);
+                    item.setStartedDate(null);
+                    item.setFinishedDate(null);
                     statusBubble.setText(IconManager.CANCELLED);
                 }
 
-    	        Program.setDirtyFlag(true);
-    	        controller.redrawList();
+                Program.setDirtyFlag(true);
+                controller.redrawList();
             }
-    	}
+        }
     };
 
     EventHandler<MouseEvent> onClickPriority = new EventHandler<MouseEvent>() {
-    	@Override
-    	public void handle(MouseEvent event) {
-    		TextInputDialog inputPrio = new TextInputDialog(item.getPriority().toString());
-    		inputPrio.setTitle("Change Priority");
-    		inputPrio.setHeaderText(null);
-    		inputPrio.setContentText("New Priority:");
-    		
-    		Optional<String> result = inputPrio.showAndWait();
-    		
-    		result.ifPresent(priority -> {
-    			try {
-    			    int newPriority = Integer.parseInt(priority);
-    			    Program.getList().setPriority(item, newPriority);
-    				setPriorityLabel();
-    				Program.setDirtyFlag(true);
-    				controller.redrawList();
-    			} catch (NumberFormatException e) {
-    				Alert alert = new Alert(AlertType.ERROR, "Value is not an integer!");
-    				alert.show();
-    			} catch (IllegalArgumentException e) {
+        @Override
+        public void handle(MouseEvent event) {
+            TextInputDialog inputPrio = new TextInputDialog(item.getPriority().toString());
+            inputPrio.setTitle("Change Priority");
+            inputPrio.setHeaderText(null);
+            inputPrio.setContentText("New Priority:");
+
+            Optional<String> result = inputPrio.showAndWait();
+
+            result.ifPresent(priority -> {
+                try {
+                    int newPriority = Integer.parseInt(priority);
+                    Program.getList().setPriority(item, newPriority);
+                    setPriorityLabel();
+                    Program.setDirtyFlag(true);
+                    controller.redrawList();
+                } catch (NumberFormatException e) {
+                    Alert alert = new Alert(AlertType.ERROR, "Value is not an integer!");
+                    alert.show();
+                } catch (IllegalArgumentException e) {
                     Alert alert = new Alert(AlertType.ERROR, e.getMessage());
                     alert.show();
                 }
-    		});
-    	}
+            });
+        }
     };
 
     public void setPriorityLabel() {
-    	priority.setText("Priority " + item.getPriority());
+        priority.setText("Priority " + item.getPriority());
     }
-    
+
     public ListBoxItem(MainScreenController controller) {
         this.controller = controller;
 
@@ -222,14 +236,14 @@ public class ListBoxItem extends HBox {
         // apply base styling
         getStyleClass().addAll("bg-white", "border-grey");
     }
-    
+
     //Updates due date label to what is stored in duedateval
     private void changeDueDateText() {
-    	DateTimeFormatter dateFormatNoYear = DateTimeFormatter.ofPattern ("MM/dd");
+        DateTimeFormatter dateFormatNoYear = DateTimeFormatter.ofPattern ("MM/dd");
         DateTimeFormatter dateFormatWithYear = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        
-    	
-    	if (item.getDueDate().getYear() == LocalDate.now().getYear()) {
+
+
+        if (item.getDueDate().getYear() == LocalDate.now().getYear()) {
             dueDate.setText("Due " + item.getDueDate().format(dateFormatNoYear));
         } else {
             dueDate.setText("Due " + item.getDueDate().format(dateFormatWithYear));
@@ -244,7 +258,7 @@ public class ListBoxItem extends HBox {
      */
     public void init(ITodoListItem listItem, SortBy activeSort) {
         item = listItem;
-        
+
         switch (item.getStatus()) {
             case NotStarted:
                 statusBubble.setText(IconManager.NOT_STARTED);
@@ -275,5 +289,5 @@ public class ListBoxItem extends HBox {
         changeDueDateText();
         getChildren().add(dueDate);
     }
-    
+
 }
