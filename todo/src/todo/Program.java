@@ -21,7 +21,7 @@ public class Program extends Application {
     private boolean dirtyFlag = false;
     private String filename = null;
     
-    public static final String USER_GUIDE_LOCATION = "https://drive.google.com/file/d/1wi3M6ad1Fy0sIpJA9fJFJLoAceUZ-tly/view?usp=sharing";
+    public static final String USER_GUIDE_LOCATION = "https://drive.google.com/file/d/1Jugpedjokk7RE-VYP5vaE6ZyVv10rDhQ/view?usp=sharing";
 
     /**
      * Main entry point to the program
