@@ -283,7 +283,12 @@ public class MainScreenController implements Initializable {
     		newItem.setDescription(description);
     	});
     	
-    	Program.getList().addItem(newItem);
+    	if(Program.getList().containsDescription(newItem.getDescription())) {
+    		Alert alert = new Alert(AlertType.ERROR,"Description cannot be the same as that of another item.", ButtonType.OK);
+            alert.showAndWait();
+    	} else {
+    		Program.getList().addItem(newItem);
+    	}
     	
     	redrawList();
     }
