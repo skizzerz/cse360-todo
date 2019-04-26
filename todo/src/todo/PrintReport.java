@@ -6,6 +6,7 @@ package todo;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.net.URI;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -39,6 +40,7 @@ public class PrintReport {
             	PrintWriter printer = new PrintWriter(file.getAbsolutePath());
                 printer.print(writeable);
                 printer.close();
+                java.awt.Desktop.getDesktop().edit(file);
             } catch (Exception e) {
                 Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
                 alert.showAndWait();
