@@ -51,8 +51,11 @@ public class ListBoxItem extends HBox {
             description.setOnKeyReleased(enterPressed -> {
                   if (enterPressed.getCode() == KeyCode.ENTER){
                       if(Program.getList().containsDescription(description.getText())) {
-                        Alert alert = new Alert(AlertType.ERROR,"Description cannot be the same as that of another item.", ButtonType.OK);
-                        alert.showAndWait();
+                    	  Alert error = new Alert(AlertType.ERROR);
+                          error.setTitle("Error");
+                          error.setHeaderText(null);
+                          error.setContentText("This task already exists in the list!");
+                          error.show();
                       } else {
                          description.setEditable(false);
                          //Store Description
