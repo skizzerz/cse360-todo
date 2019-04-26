@@ -8,9 +8,12 @@ import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.DatePicker;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -23,7 +26,7 @@ import javafx.stage.Stage;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-
+import java.util.Optional;
 
 import com.sun.javafx.scene.control.skin.DatePickerSkin;
 
@@ -108,6 +111,34 @@ public class ListBoxItem extends HBox {
     	}
     };
     
+    EventHandler<MouseEvent> onClickPriority = new EventHandler<MouseEvent>() {
+    	@Override
+    	public void handle(MouseEvent event) {
+    		TextInputDialog inputPrio = new TextInputDialog("");
+    		inputPrio.setTitle("Enter Priority");
+    		inputPrio.setHeaderText("Enter Priority");
+    		inputPrio.setContentText("Priority:");
+    		
+    		Optional<String> result = inputPrio.showAndWait();
+    		
+    		result.ifPresent(prio -> {
+    			try {
+    				setPriority(Integer.parseInt(prio));
+    				item.setPriority(Integer.parseInt(prio));
+    				setPriorityLabel();
+    				
+    				//It is an int so add it
+    			}
+    			catch( Exception e) {
+    				Alert alert = new Alert(AlertType.ERROR, "Value is not an integer!");
+    				alert.showAndWait();
+    				//It is not an int so give error message
+    			}
+    		});
+    	}
+    };
+    
+    
     public HBox getHBox() {
     	return taskBox;
     }
@@ -139,7 +170,9 @@ public class ListBoxItem extends HBox {
     public void setStatus(Status stat) {
     	status = stat;
     }
-    
+    public void setPriorityLabel() {
+    	priority.setText("Priority: " + priorityVal);
+    }
     
     
     public ListBoxItem(int prio, String desc, Status stat, LocalDate due) {
@@ -184,6 +217,7 @@ public class ListBoxItem extends HBox {
         priority.getStyleClass().addAll("fg-dark", "list-item");
         priority.setCursor(Cursor.HAND);
         priority.setPrefWidth(200); // width changes based on sort by selection; see init() below
+        priority.addEventFilter(MouseEvent.MOUSE_CLICKED, onClickPriority);
         HBox.setHgrow(dueDate, Priority.NEVER);
 
         grip = new Label();
