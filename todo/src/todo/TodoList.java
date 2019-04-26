@@ -36,7 +36,7 @@ public class TodoList implements ITodoList {
 
 	    if (toRemove.getPriority() != null) {
 	        // shift everything else up to fill in the slot
-            stream().filter(o -> o.getPriority() > toRemove.getPriority()).forEach(o -> o.setPriority(o.getPriority() - 1));
+            stream().filter(o -> o.getPriority() != null && o.getPriority() > toRemove.getPriority()).forEach(o -> o.setPriority(o.getPriority() - 1));
         }
 	}
 
@@ -62,12 +62,12 @@ public class TodoList implements ITodoList {
         // this is terribly inefficient but I also don't care. Lists are going to be smallish
         if (curPriority != null) {
             // if we have a current priority, shift everything below it up by 1 to fill the now-empty slot
-            stream().filter(o -> o.getPriority() > curPriority).forEach(o -> o.setPriority(o.getPriority() - 1));
+            stream().filter(o -> o.getPriority() != null && o.getPriority() > curPriority).forEach(o -> o.setPriority(o.getPriority() - 1));
         }
 
         if (newPriority != null) {
             // push everything currently at this priority down 1 to make room for us
-            stream().filter(o -> o.getPriority() >= newPriority).forEach(o -> o.setPriority(o.getPriority() + 1));
+            stream().filter(o -> o.getPriority() != null && o.getPriority() >= newPriority).forEach(o -> o.setPriority(o.getPriority() + 1));
         }
 
         item.setPriority(newPriority);
