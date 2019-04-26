@@ -11,9 +11,9 @@ public class IconManager {
 
     // Icon unicode points
     /**
-     * Not started "icon": just blank space
+     * Not started icon: pause symbol
      */
-    public final static String NOT_STARTED = " ";
+    public final static String NOT_STARTED = "\uf04c";
 
     /**
      * New icon: page with 3 lines
