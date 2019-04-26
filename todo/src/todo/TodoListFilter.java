@@ -86,7 +86,7 @@ public class TodoListFilter implements ITodoListFilter {
         switch (sortBy)
         {
             case Description:
-                result = o1.getDescription().compareTo(o2.getDescription());
+                result = o1.getDescription().compareToIgnoreCase(o2.getDescription());
                 break;
             case DueDate:
                 if (o1.getDueDate() == null) {
