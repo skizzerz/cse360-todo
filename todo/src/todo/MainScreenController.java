@@ -273,6 +273,16 @@ public class MainScreenController implements Initializable {
     	
     	TodoListItem newItem = new TodoListItem();
     	
+    	TextInputDialog inputDesc = new TextInputDialog("");
+    	inputDesc.setTitle("New Task");
+    	inputDesc.setHeaderText(null);
+    	inputDesc.setContentText("Enter Description:");
+    	
+    	Optional<String> result = inputDesc.showAndWait();
+    	result.ifPresent(description -> {
+    		newItem.setDescription(description);
+    	});
+    	
     	Program.getList().addItem(newItem);
     	
     	redrawList();
