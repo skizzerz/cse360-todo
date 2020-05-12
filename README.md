@@ -1,5 +1,5 @@
 To-Do List Project
-Authors: Noah Anderson, Adam Harvey, Adwith Maple, Ryan Schmidt
+Authors: Noah Anderson, Adam Harvey, Adwith Malpe, Ryan Schmidt
 
 Overview:
 The To-Do List application was designed to make organizing a list of tasks and deadlines easier. The To-Do list application allows
